@@ -5,7 +5,7 @@
 #include "ResourceMgr.h"
 #include "InputMgr.h"
 #include "SceneMgr.h"
-
+#include "TileMap.h"
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1), rect1(nullptr), rect2(nullptr), 
 	circle1(nullptr), circle2(nullptr), collisionText(nullptr), modeText(nullptr)
 {
@@ -21,8 +21,10 @@ SceneDev1::~SceneDev1()
 
 void SceneDev1::Init()
 {
+	texIds.push_back("graphics/background_sheet.png");
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
 
+	AddGameObject(new TileMap("TileMap"));
 	// 첫 번째 사각형 (키보드로 회전)
 	rect1 = new sf::RectangleShape(sf::Vector2f(100.f, 150.f));
 	rect1->setFillColor(sf::Color::Green);
