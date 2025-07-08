@@ -1,11 +1,13 @@
 #pragma once
 #include "Scene.h"
 #include "TileMap.h"
+
 class TextGo;
 
 class SceneDev1 : public Scene
 {
 protected:
+	
 	enum class CollisionMode
 	{
 		Rectangle,
@@ -27,7 +29,7 @@ protected:
 public:
 	SceneDev1();
 	~SceneDev1() override;
-
+	
 	void Init() override;
 	void Enter() override;
 	void Update(float dt) override;

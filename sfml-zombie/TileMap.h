@@ -39,6 +39,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	bool IsCollision(sf::RectangleShape rect);  // 이거 FloatRect로 된거 수정했는데 괜찮아?
+	
+	bool IsCollision(sf::FloatRect rect);  
 };
 

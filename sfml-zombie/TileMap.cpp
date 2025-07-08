@@ -49,6 +49,7 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 
 				hitBox.UpdateTransform(tr, tileRect);
 				hitBoxes.push_back(hitBox);
+				
 			}
 
 			int quadIndex = i * count.x + j;			   // VertexArray ¿Œµ¶Ω∫
@@ -117,17 +118,11 @@ void TileMap::Draw(sf::RenderWindow& window)
 	}
 }
 
-bool TileMap::IsCollision(sf::RectangleShape rect)  
-{  
-	for (int i = 0; i < hitBoxes.size(); ++i)
-	{
-		sf::RectangleShape hitBox = hitBoxes[i].getRect();
-		if (Utils::CheckCollision(hitBox, rect))
-		{
-			return true;
-		}
-	}
-	return false;
+
+bool TileMap::IsCollision(sf::FloatRect rect)
+{
+ 
+    return false;
 }
 
 void TileMap::SetPosition(const sf::Vector2f& pos)

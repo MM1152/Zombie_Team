@@ -8,7 +8,7 @@ protected:
 	TextGo* start;
 	TextGo* exit;
 	
-
+	sf::Vector2f windowSize;
 public:
 	SceneTitle();
 	

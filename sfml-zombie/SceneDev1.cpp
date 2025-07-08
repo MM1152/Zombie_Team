@@ -190,6 +190,10 @@ void SceneDev1::Update(float dt)
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Title);
 	}
+	if (InputMgr::GetKeyDown(sf::Keyboard::Return))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Dev1);
+	}
 	/*if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Title);
