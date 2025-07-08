@@ -2,25 +2,11 @@
 #include "Scene.h"
 
 class TextGo;
-
+class Zombie;
 class SceneDev1 : public Scene
 {
 protected:
-	enum class CollisionMode
-	{
-		Rectangle,
-		Circle
-	};
-
-	sf::RectangleShape* rect1;
-	sf::RectangleShape* rect2;
-	sf::CircleShape* circle1;
-	sf::CircleShape* circle2;
-	TextGo* collisionText;
-	TextGo* modeText;
-	
-	CollisionMode currentMode = CollisionMode::Rectangle;
-	bool isColliding = false;
+	Zombie* zombie;
 
 public:
 	SceneDev1();
