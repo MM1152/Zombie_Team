@@ -1,28 +1,16 @@
 #pragma once
 #include "GameObject.h"
-class Zombie : public GameObject
+class Blood : public GameObject
 {
 protected:
 	sf::Sprite body;
-	std::string texId;
+	sf::String texId;
 
-	int maxHp;
-	int hp;
-
-	float speed;
-	sf::Vector2f targetPos;
-	sf::Vector2f dir;
-	// 플레이어 연결 필요
+	sf::Color initColor;
+	sf::Color curColor;
 public:
-	enum class Types {
-		Bloater,
-		Chaser,
-		Crawler,
-		TypeCount,
-	};
-
-	Zombie(const std::string& name = "");
-	virtual ~Zombie() = default;
+	Blood(const std::string& name = "");
+	virtual ~Blood() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
@@ -35,9 +23,5 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
-
-	void SetType(Types type);
-	void OnDamage(int damage);
-	const sf::Sprite& GetSprite() const { return body; };
 };
 

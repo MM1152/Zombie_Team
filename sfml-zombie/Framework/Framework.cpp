@@ -11,6 +11,7 @@ void Framework::Init(int w, int h, const std::string& t)
 
     Utils::Init();
 	InputMgr::Init();
+    ZOMBIE_MGR.Init();
 	SCENE_MGR.Init();
 }
 
@@ -37,6 +38,8 @@ void Framework::Do()
 
         // Update
 
+       
+
 #ifdef DEF_DEV
         if (InputMgr::GetKeyDown(sf::Keyboard::F10))
         {
@@ -46,7 +49,7 @@ void Framework::Do()
 
 
         SCENE_MGR.Update(deltaTime);
-
+        ZOMBIE_MGR.Update(deltaTime);
         // Draw
         window.clear();
         SCENE_MGR.Draw(window);
@@ -57,6 +60,7 @@ void Framework::Do()
 void Framework::Release()
 {
 	SCENE_MGR.Release();
+    ZOMBIE_MGR.Release();
 
 	SOUNDBUFFER_MGR.Unload(soundIds);
 	FONT_MGR.Unload(fontIds);

@@ -18,17 +18,20 @@ SceneDev1::~SceneDev1()
 
 void SceneDev1::Init()
 {
+	ZOMBIE_MGR.SettingScene(this);
+	worldView.setCenter(0.f, 0.f);
+	worldView.setSize({FRAMEWORK.GetWindowSizeF().x, FRAMEWORK.GetWindowSizeF().y });
 	texIds.push_back("graphics/bloater.png");
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crawler.png");
+	texIds.push_back("graphics/blood.png");
 
 	Scene::Init();
 }
 
 void SceneDev1::Enter()
 {
-	zombie = new Zombie();
-	AddGameObject(zombie);
+	
 
 	Scene::Enter();
 }
@@ -36,8 +39,9 @@ void SceneDev1::Enter()
 void SceneDev1::Update(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
-		zombie->Reset();
+		ZOMBIE_MGR.SpawnZombie(1);
 	}
+	
 	Scene::Update(dt);
 }
 

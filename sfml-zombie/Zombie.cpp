@@ -39,6 +39,7 @@ void Zombie::SetOrigin(Origins preset)
 
 void Zombie::Init()
 {
+	targetPos = { 0.f , 0.f };
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 }
@@ -50,15 +51,18 @@ void Zombie::Release()
 void Zombie::Reset()
 {
 	SetType((Types)Utils::RandomRange(0, (int)Types::TypeCount));
-	SetScale({ 1.f,1.f });
 	body.setTexture(TEXTURE_MGR.Get(texId) , true);
 	
 	SetOrigin(Origins::MC);
-	SetPosition({ FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2 });
 }
 
 void Zombie::Update(float dt)
-{
+{	
+	//TODO : 플레이어 실시간 위치값으로 변경
+	dir = targetPos - GetPosition();
+	Utils::Normalize(dir);
+	SetPosition(GetPosition() + dir * speed * dt);
+	SetRotation(Utils::Angle(dir));
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
@@ -72,21 +76,21 @@ void Zombie::SetType(Types type)
 		maxHp = 500;
 		hp = maxHp;
 
-		speed = 100;
+		speed = 75;
 		texId = "graphics/bloater.png";
 	}
 	else if (type == Types::Chaser) {
 		maxHp = 200;
 		hp = maxHp;
 
-		speed = 200;
+		speed = 120;
 		texId = "graphics/chaser.png";
 	}
 	else if (type == Types::Crawler) {
 		maxHp = 100;
 		hp = maxHp;
 
-		speed = 300;
+		speed = 150;
 		texId = "graphics/crawler.png";
 	}
 
@@ -94,8 +98,9 @@ void Zombie::SetType(Types type)
 
 void Zombie::OnDamage(int damage)
 {
+	std::cout << damage << std::endl;
 	hp = Utils::Clamp(hp - damage, 0, maxHp);
 	if (hp == 0) {
-		//TODO : 좀비 피뽑기
+		SetActive(false);
 	}
 }
