@@ -3,9 +3,16 @@
 
 class TextGo;
 
+
+
+
 class SceneDev1 : public Scene
 {
 protected:
+
+
+
+
 	enum class CollisionMode
 	{
 		Rectangle,

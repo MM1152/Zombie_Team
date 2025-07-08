@@ -6,6 +6,7 @@
 #include "InputMgr.h"
 #include "SceneMgr.h"
 
+
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1), rect1(nullptr), rect2(nullptr), 
 	circle1(nullptr), circle2(nullptr), collisionText(nullptr), modeText(nullptr)
 {
