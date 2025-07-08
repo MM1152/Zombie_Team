@@ -38,9 +38,17 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 		for (int j = 0; j < count.x; j++)
 		{
 			int texIndex = Utils::RandomRange(0, 3);
-			if (i == 0 || j == 0 || i == count.y - 1 || j == count.x - 1)  // 마지막 타일
+			if (i == 0 || j == 0 || i == count.y - 1 || j == count.x - 1)  // 외곽 타일
 			{
 				texIndex = 3;    // 벽돌로 고정
+
+				sf::FloatRect tileRect(j * size.x, i * size.y, size.x, size.y); // 좌상단.x, 좌상단.y, 타일의 x사이즈, 타일의 y사이즈
+				
+				sf::Transformable tr;
+				tr.setPosition(tileRect.left, tileRect.top); // 타일의 좌상단에 포지션잡기
+
+				hitBox.UpdateTransform(tr, tileRect);
+				hitBoxes.push_back(hitBox);
 			}
 
 			int quadIndex = i * count.x + j;			   // VertexArray 인덱스
@@ -99,11 +107,27 @@ void TileMap::Draw(sf::RenderWindow& window)
 	state.texture = texture;
 	state.transform = transform;
 	window.draw(va, state);
+
+	if (Variables::isDrawHitBox)
+	{
+		for (auto& hitBox : hitBoxes)
+		{
+			hitBox.Draw(window);
+		}
+	}
 }
 
-bool TileMap::IsCollision(sf::FloatRect rect)  
+bool TileMap::IsCollision(sf::RectangleShape rect)  
 {  
-	return 0;
+	for (int i = 0; i < hitBoxes.size(); ++i)
+	{
+		sf::RectangleShape hitBox = hitBoxes[i].getRect();
+		if (Utils::CheckCollision(hitBox, rect))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void TileMap::SetPosition(const sf::Vector2f& pos)

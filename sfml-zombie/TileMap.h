@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "HitBox.h"
+
 class TileMap : public GameObject
 {
 protected:
@@ -10,6 +12,10 @@ protected:
 
 	sf::Vector2i cellCount;
 	sf::Vector2f cellSize;
+
+	std::vector<HitBox> hitBoxes;
+
+	HitBox hitBox;
 
 	bool isCollision = false;
 
@@ -33,6 +39,6 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	bool IsCollision(sf::FloatRect rect);
+	bool IsCollision(sf::RectangleShape rect);  // 이거 FloatRect로 된거 수정했는데 괜찮아?
 };
 

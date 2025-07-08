@@ -45,3 +45,8 @@ void SceneTitle::Update(float dt)
 		SCENE_MGR.ChangeScene(SceneIds::Dev1);
 	}
 }
+
+void SceneTitle::Draw(sf::RenderWindow& window)
+{
+
+}
