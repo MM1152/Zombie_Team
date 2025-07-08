@@ -146,6 +146,7 @@
     <ClCompile Include="Framework\InputMgr.cpp" />
     <ClCompile Include="Framework\SpriteGo.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
+    <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SceneDev1.cpp" />
     <ClCompile Include="SceneDev2.cpp" />
@@ -155,6 +156,7 @@
     </ClCompile>
     <ClCompile Include="Framework\TextGo.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
+    <ClCompile Include="TextBullet.cpp" />
     <ClCompile Include="TextScore.cpp" />
     <ClCompile Include="Variables.cpp" />
     <ClCompile Include="Zombie.cpp" />
@@ -170,12 +172,14 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
+    <ClInclude Include="HpBar.h" />
     <ClInclude Include="SceneDev1.h" />
     <ClInclude Include="SceneDev2.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />
+    <ClInclude Include="TextBullet.h" />
     <ClInclude Include="TextScore.h" />
     <ClInclude Include="Variables.h" />
     <ClInclude Include="Zombie.h" />

@@ -1,19 +1,15 @@
 #pragma once
 #include "GameObject.h"
-class Blood : public GameObject
+class HpBar :
+    public GameObject
 {
 protected:
-	sf::Sprite body;
-	sf::String texId;
-
-	sf::Color initColor;
-	sf::Color curColor;
-
-	float timer = 0;
-	float speed = 10.f;
+	sf::RectangleShape rect;
+	sf::Vector2f initSize;
+	//TODO : 플레이여 연결 필요
 public:
-	Blood(const std::string& name = "");
-	virtual ~Blood() = default;
+	HpBar(const std::string& name = "");
+	virtual ~HpBar() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;

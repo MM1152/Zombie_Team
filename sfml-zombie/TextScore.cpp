@@ -17,7 +17,7 @@ void TextScore::Reset()
 
 	score = 0;
 	SetScore(0);
-	SetOrigin(Origins::MC);
+	SetOrigin(Origins::TL);
 }
 
 void TextScore::SetScore(int score)

@@ -4,13 +4,15 @@
 class TextGo;
 class Zombie;
 class TextScore;
-
+class HpBar;
+class TextBullet;
 class SceneDev1 : public Scene
 {
 protected:
 	Zombie* zombie;
 	TextScore* textScore;
-
+	HpBar* hpbar;
+	TextBullet* textBullet;
 public:
 	SceneDev1();
 	~SceneDev1() override;

@@ -2,6 +2,7 @@
 #include "ZombieMgr.h"
 #include "Zombie.h"
 #include "Blood.h"
+#include "TextGo.h"
 void ZombieMgr::SpawnBlood(const sf::Transformable& trans)
 {
 	Blood* blood;
@@ -20,18 +21,19 @@ void ZombieMgr::SpawnBlood(const sf::Transformable& trans)
 }
 void ZombieMgr::Init()
 {
-
+	
 }
 
 void ZombieMgr::Update(float dt)
 {
 	std::list<Zombie*>::iterator iter = zombieList.begin();
-
+	dieZombie = 0;
 	while (iter != zombieList.end()) {
 		if (!(*iter)->GetActive()) {
 			SpawnBlood((*iter)->GetSprite());
 			zombiePool.push_back(*iter);
 			iter = zombieList.erase(iter);
+			dieZombie++;
 		}
 		else {
 			iter++;
@@ -50,6 +52,11 @@ void ZombieMgr::Update(float dt)
 }
 
 void ZombieMgr::Release()
+{
+	
+}
+
+void ZombieMgr::Enter()
 {
 	
 }
@@ -79,3 +86,4 @@ void ZombieMgr::SettingScene(Scene* scene)
 {
 	this->scene = scene;
 }
+

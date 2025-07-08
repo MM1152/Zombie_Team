@@ -66,6 +66,12 @@
     <ClCompile Include="TextScore.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="HpBar.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="TextBullet.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\InputMgr.h">
@@ -123,6 +129,12 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="TextScore.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="HpBar.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="TextBullet.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

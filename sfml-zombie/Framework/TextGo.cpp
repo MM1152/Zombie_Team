@@ -76,6 +76,8 @@ void TextGo::Reset()
 {
 	text.setFont(FONT_MGR.Get(fontId));
 	Utils::SetOrigin(text, originPreset);
+	sortingLayer = SortingLayers::UI;
+	sortingOrder = 0;
 }
 
 void TextGo::Update(float dt)

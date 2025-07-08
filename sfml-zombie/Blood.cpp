@@ -60,16 +60,21 @@ void Blood::Reset()
 void Blood::Update(float dt)
 {
 	if (GetActive()) {
-		curColor = body.getColor();
-		curColor.a -= dt;
+		timer += dt * speed;
+		if (timer >= 1) {
+			curColor = body.getColor();
+			curColor.a -= timer;
+			timer = 0;
 
-		body.setColor(curColor);
-
+			body.setColor(curColor);
+		}
+		
 		if (curColor.a <= 0) {
 			SetActive(false);
 			body.setColor(initColor);
 		}
 	}
+	
 }
 
 void Blood::Draw(sf::RenderWindow& window)

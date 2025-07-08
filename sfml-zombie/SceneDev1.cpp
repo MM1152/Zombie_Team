@@ -7,6 +7,8 @@
 #include "SceneMgr.h"
 #include "Zombie.h"
 #include "TextScore.h"
+#include "HpBar.h"
+#include "TextBullet.h"
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 {
@@ -30,17 +32,25 @@ void SceneDev1::Init()
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crawler.png");
 	texIds.push_back("graphics/blood.png");
-	fontIds.push_back("fonts/zombiecontrol.ttf");
+	texIds.push_back("graphics/ammo_icon.png");
+	fontIds.push_back("fonts/zombiecontrol.ttf"); 
+
+	textScore = new TextScore();
+	hpbar = new HpBar();
+	textBullet = new TextBullet();
+	
+
+	AddGameObject(textBullet);
+	AddGameObject(hpbar);
+	AddGameObject(textScore);
 
 	Scene::Init();
 }
 
 void SceneDev1::Enter()
 {
-	textScore = new TextScore();
-	textScore->SetPosition({0.f , 0.f});
-	AddGameObject(textScore);
 	
+
 	Scene::Enter();
 }
 
@@ -48,9 +58,13 @@ void SceneDev1::Update(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
 		ZOMBIE_MGR.SpawnZombie(1);
+		textBullet->SetBulletCount(10 , 20);
 	}
-	
+
+	int count = ZOMBIE_MGR.GetDieZombieCount();
+	textScore->SetScore(count * 10.f);
 	Scene::Update(dt);
+	
 }
 
 void SceneDev1::Draw(sf::RenderWindow& window)
