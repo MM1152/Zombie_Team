@@ -68,7 +68,6 @@ void Player::Reset()
 
 	body.setTexture(TEXTURE_MGR.Get(texId), true); // 텍스처 재설정
 	SetOrigin(Origins::MC);
-	SetPosition({ 500.f, 500.f });
 	SetRotation(0.f);
 
 }
@@ -83,6 +82,14 @@ void Player::Update(float dt)
 		Utils::Normalize(direction); // 방향 벡터를 정규화
 	}
 	SetPosition(position + direction * speed * dt); // 플레이어 위치 업데이트
+
+
+
+	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // 마우스 위치 가져오기
+	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // 월드 좌표로 변환
+	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // 플레이어가 바라보는 방향 계산
+	SetRotation(Utils::Angle(look)); // 플레이어 회전 설정
+	
 }
 
 void Player::Draw(sf::RenderWindow& window)

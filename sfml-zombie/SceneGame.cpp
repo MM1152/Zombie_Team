@@ -9,9 +9,11 @@ SceneGame::SceneGame(): Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
+	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y });
+	worldView.setCenter({ 0.f , 0.f });
 	texIds.push_back("graphics/player.png");
 	player = (Player*)AddGameObject(new Player("Player"));
-
+	
 }
 
 

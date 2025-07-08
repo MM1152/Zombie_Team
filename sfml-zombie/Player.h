@@ -20,7 +20,6 @@ protected:
 	int maxHp = 1000;
 	bool isAlive = true; // 플레이어 생존 여부
 
-
 	float speed = 200.f;
 	float shootInterval = 0.1f; // 총알 발사 간격
 	float shootTimer = 0.f; // 총알 발사 타이머
