@@ -187,7 +187,11 @@ void SceneDev1::Update(float dt)
 	// 씬 전환
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Dev2);
+		SCENE_MGR.ChangeScene(SceneIds::Title);
+	}
+	if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+	{
+		SCENE_MGR.ChangeScene(SceneIds::Title);
 	}
 }
 
