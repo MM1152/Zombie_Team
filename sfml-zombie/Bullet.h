@@ -30,6 +30,6 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float speed, int damage);
+	void Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float spd, int dmg);
 };
 

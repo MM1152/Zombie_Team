@@ -58,7 +58,6 @@ void Bullet::Release()
 
 void Bullet::Reset()
 {
-	//sceneGame = dynamic_cast<SceneGame*>(SCENE_MGR.GetCurrentScene()); // 현재 씬을 게임 씬으로 캐스팅
 	body.setTexture(TEXTURE_MGR.Get(texId), true); // 텍스처 재설정
 	SetOrigin(Origins::ML);
 	SetPosition(sf::Vector2f( 0.f, 0.f ));
@@ -80,12 +79,12 @@ void Bullet::Draw(sf::RenderWindow& window)
 	window.draw(body);
 }
 
-void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float speed, int damage)
+void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float spd, int dmg)
 {
 	SetPosition(pos); // 발사 위치 설정
 	direction = dir; // 발사 방향 설정
-	speed = speed;
-	damage = damage;
+	speed = spd;
+	damage = dmg;
 
 	SetRotation(Utils::Angle(direction)); // 방향에 따라 회전 설정 
 }

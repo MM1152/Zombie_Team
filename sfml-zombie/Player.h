@@ -45,5 +45,6 @@ public:
 	void Draw(sf::RenderWindow& window) override;
 
 	void Shoot();
+	void OnDamage(int damage);
 };
 

@@ -66,6 +66,13 @@ void Player::Reset()
 		sceneGame = nullptr;
 	}
 
+	for (Bullet* bullet : bulletList) // bulletList에 있는 모든 총알을 비활성화하고 bulletPool에 넣는다.
+	{
+		bullet->SetActive(false); 
+		bulletPool.push_back(bullet); 
+	}
+	bulletList.clear();
+
 
 	body.setTexture(TEXTURE_MGR.Get(texId), true); // 텍스처 재설정
 	SetOrigin(Origins::MC);
@@ -81,9 +88,10 @@ void Player::Reset()
 	hp = maxHp;
 
 
-
-
 }
+
+
+
 
 void Player::Update(float dt)
 {
@@ -124,39 +132,13 @@ void Player::Update(float dt)
 		shootTimer = 0.f;	
 	}
 
-	for (Bullet* bullet : bulletList)  // bulletList에 있는 모든 총알을 비활성화(SetActive(false))하고 재사용 풀(bulletPool)로 옮긴 다음 bulletList를 비운다.
-	{
-		bullet->SetActive(false);
-		bulletPool.push_back(bullet);
-	}
-	bulletList.clear();
-	
-
-
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
 
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
 }
-
-
-
 
 
 void Player::Shoot()
@@ -170,7 +152,7 @@ void Player::Shoot()
 	else // 총알이 있으면 풀에서 가져오기
 	{
 		bullet = bulletPool.front(); // 풀에서 첫 번째 총알 가져오기
-		bulletPool.pop_front(); // 풀에서 제거
+		bulletPool.pop_front(); // 총알 풀에서 제거
 		bullet->SetActive(true); // 총알 활성화
 	}
 
@@ -179,4 +161,20 @@ void Player::Shoot()
 
 	bulletList.push_back(bullet); // 총알 리스트에 추가
 	sceneGame->AddGameObject(bullet);
+}
+
+void Player::OnDamage(int damage)
+{
+	if (!isAlive)
+	{
+		return;
+	}
+
+	hp = Utils::Clamp(hp - damage, 0, maxHp); 
+	if (hp <= 0)
+	{
+		hp = 0;
+		isAlive = false; // 플레이어가 죽었음을 표시
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
 }
