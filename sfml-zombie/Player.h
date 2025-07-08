@@ -1,10 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-
-
 class SceneGame;
-
+class Bullet;
 
 
 class Player : public GameObject
@@ -24,8 +22,11 @@ protected:
 	float shootInterval = 0.1f; // 총알 발사 간격
 	float shootTimer = 0.f; // 총알 발사 타이머
 
-
+	Bullet* bullet;
 	SceneGame* sceneGame = nullptr; // 플레이어가 속한 게임 씬
+
+	std::list<Bullet*> bulletList; // 총알 리스트
+	std::list<Bullet*> bulletPool; // 총알 풀 (재사용을 위한)
 
 public:
 	Player(const std::string& name = "");
@@ -42,5 +43,7 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void Shoot();
 };
 

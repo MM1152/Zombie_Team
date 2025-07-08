@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "SceneGame.h"
 #include "Player.h"
+#include "Bullet.h"
 
 SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
@@ -9,15 +10,15 @@ SceneGame::SceneGame(): Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
-	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y });
+	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ¾ê³× Ãß°¡ÇÏ¸é ¾È³³ÀÛÇÔ
 	worldView.setCenter({ 0.f , 0.f });
+
 	texIds.push_back("graphics/player.png");
+	texIds.push_back("graphics/bullet.png");
+
 	player = (Player*)AddGameObject(new Player("Player"));
-	
+
 }
-
-
-
 
 
 void SceneGame::Enter()
@@ -27,14 +28,10 @@ void SceneGame::Enter()
 
 
 
-
-
 void SceneGame::Exit()
 {
 
 }
-
-
 
 
 
@@ -46,10 +43,9 @@ void SceneGame::Update(float dt)
 
 
 
-
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 }
 					 
-					
+				
