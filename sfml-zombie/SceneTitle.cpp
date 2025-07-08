@@ -32,8 +32,10 @@ void SceneTitle::Init()
 {
 	texIds.push_back("graphics/background.png");
 	fontIds.push_back("fonts/zombiecontrol.ttf");
-	
+	sf::View view(sf::FloatRect(0.f, 0.f, 1920.f, 1080.f));
+	FRAMEWORK.GetWindow().setView(view);
 	Scene::Init();
+	
 }
 
 void SceneTitle::Update(float dt)

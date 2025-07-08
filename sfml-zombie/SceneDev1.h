@@ -1,6 +1,6 @@
 #pragma once
 #include "Scene.h"
-
+#include "TileMap.h"
 class TextGo;
 
 class SceneDev1 : public Scene
@@ -11,6 +11,8 @@ protected:
 		Rectangle,
 		Circle
 	};
+
+	TileMap tileMap;
 
 	sf::RectangleShape* rect1;
 	sf::RectangleShape* rect2;

@@ -11,6 +11,8 @@ protected:
 	sf::Vector2i cellCount;
 	sf::Vector2f cellSize;
 
+	bool isCollision = false;
+
 public:
 
 	TileMap(const std::string& name = "");
@@ -30,5 +32,7 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	bool IsCollision(sf::FloatRect rect);
 };
 

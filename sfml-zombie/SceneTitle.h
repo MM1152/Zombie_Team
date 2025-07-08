@@ -7,6 +7,7 @@ protected:
 	TextGo* title;
 	TextGo* start;
 	TextGo* exit;
+	
 
 public:
 	SceneTitle();

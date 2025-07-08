@@ -145,6 +145,7 @@
     <ClCompile Include="Framework\InputMgr.cpp" />
     <ClCompile Include="Framework\SpriteGo.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
+    <ClCompile Include="HitBox.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SceneDev1.cpp" />
     <ClCompile Include="SceneDev2.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
+    <ClInclude Include="HitBox.h" />
     <ClInclude Include="SceneDev1.h" />
     <ClInclude Include="SceneDev2.h" />
     <ClInclude Include="Framework\SceneMgr.h" />

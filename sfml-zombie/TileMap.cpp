@@ -101,6 +101,11 @@ void TileMap::Draw(sf::RenderWindow& window)
 	window.draw(va, state);
 }
 
+bool TileMap::IsCollision(sf::FloatRect rect)  
+{  
+	return 0;
+}
+
 void TileMap::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
