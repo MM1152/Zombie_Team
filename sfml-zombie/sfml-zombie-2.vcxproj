@@ -155,6 +155,7 @@
     </ClCompile>
     <ClCompile Include="Framework\TextGo.cpp" />
     <ClCompile Include="Framework\Utils.cpp" />
+    <ClCompile Include="TextScore.cpp" />
     <ClCompile Include="Variables.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieMgr.cpp" />
@@ -175,6 +176,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />
+    <ClInclude Include="TextScore.h" />
     <ClInclude Include="Variables.h" />
     <ClInclude Include="Zombie.h" />
     <ClInclude Include="ZombieMgr.h" />

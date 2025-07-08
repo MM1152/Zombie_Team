@@ -3,10 +3,13 @@
 
 class TextGo;
 class Zombie;
+class TextScore;
+
 class SceneDev1 : public Scene
 {
 protected:
 	Zombie* zombie;
+	TextScore* textScore;
 
 public:
 	SceneDev1();

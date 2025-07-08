@@ -64,6 +64,8 @@ void TextGo::SetOrigin(Origins preset)
 
 void TextGo::Init()
 {
+	sortingLayer = SortingLayers::UI;
+	sortingOrder = 0;
 }
 
 void TextGo::Release()
