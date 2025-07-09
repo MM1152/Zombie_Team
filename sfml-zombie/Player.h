@@ -3,12 +3,15 @@
 #include "TextBullet.h"
 #include "HitBox.h"
 #include "TileMap.h"
+#include "Item.h"
+#include "HealItem.h"
+#include "AmmoItem.h"
 
 class SceneGame;
 class Bullet;
 class HpBar;
 class TextBullet;
-
+class HealItem;
 
 class Player : public GameObject
 {
@@ -26,6 +29,8 @@ protected:
 	TileMap* tileMap;
 	int hp = 0;
 	int maxHp = 1000;
+	int healamount = 100;
+	int Ammoamount;
 	bool isAlive = true; 
 
 	float speed = 200.f;
@@ -49,9 +54,14 @@ protected:
 
 	int curBullet = 0;
 	int maxBullet = 20;
-	float reloadTime = 1.5f; 
+	float reloadTime = 1.0f; 
 	bool isReloading = false; 
 	float reloadTimer = 0.f; 
+
+
+	std::list<Item*> itemList;
+	
+
 
 public:
 	bool hitAble = false;
@@ -83,13 +93,10 @@ public:
 	void Shoot();
 	void OnDamage(int damage);
 	void SetTextBullet(TextBullet* textBullet);
+	void SetItem(Item* item);
 
-
-	void GetCurrentHp(int& Hp, int& maxHp) const
-	{
-		Hp = hp;
-		maxHp = this->maxHp;
-	}
+	void Heal(int healamount);
+	void Ammo(int Ammoamount);
 
 };
 

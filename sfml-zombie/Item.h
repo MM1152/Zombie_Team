@@ -2,25 +2,30 @@
 #include "GameObject.h"
 #include "HitBox.h"
 
+
 enum class ItemType
 {
 	Heal,
 	Ammo,
 };
 
-
+class HealItem;
 class Item : public GameObject
 {
 protected:
 	sf::Sprite body;
 	std::string texId;
 	int amount = 0;
+
+	float timer = 2.f; 
+
 	bool isActive = false;
 
-	HitBox hitbox;
+	Player* player;
+	HitBox hitBox;
 public:
 
-	Item(const std::string& name="");
+	Item(const std::string& name = "", const std::string& texId = "");
 	virtual ~Item() = default;
 
 
@@ -36,7 +41,9 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	virtual void UseItem(int amount) = 0;
+	virtual void UseItem(Player* player) = 0;
+
+	HitBox& GetHitBox() { return hitBox; } // HitBox를 반환하는 함수
 
 	sf::FloatRect GetLocalBounds() const override // 로컬 좌표계에서의 경계 사각형을 반환
 	{
@@ -47,5 +54,8 @@ public:
 	{
 		return body.getGlobalBounds();
 	}
-};
 
+	static Item& SpawnItem();
+
+
+};

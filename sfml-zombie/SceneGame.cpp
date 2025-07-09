@@ -10,6 +10,7 @@
 #include "Wave.h"
 #include "Item.h"
 #include "HealItem.h"
+#include "AmmoItem.h"
 
 SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
@@ -18,9 +19,6 @@ SceneGame::SceneGame(): Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
-	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ��� �߰��ϸ� �ȳ�����
-	
-
 	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // 얘네 추가하면 안납작함
 	worldView.setCenter({ 0.f , 0.f });
 
@@ -40,6 +38,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/background_sheet.png");
 	texIds.push_back("graphics/health_pickup.png");
+	texIds.push_back("graphics/ammo_pickup.png");
 
 
 	textScore = new TextScore();
@@ -55,24 +54,18 @@ void SceneGame::Init()
 	AddGameObject(player);
 	AddGameObject(tileMap);
 	AddGameObject(wave);
-	
 
 	healItem = new HealItem("HealItem");
-	AddGameObject(healItem);
+	Ammoitem = new AmmoItem("AmmoItem");
 
+	
 
 	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
 	player->SettingHpBar(hpbar);
-
-
-
+	player->SetItem(healItem);
+	player->SetItem(Ammoitem);
 	player->SetTextBullet(textBullet); // 플레이어에 연결해야 SetBulletCount(int curCount, int maxCount) 가 업데이트됨
-
-
-
-
-
 
 	Scene::Init();
 }
@@ -139,6 +132,24 @@ void SceneGame::Update(float dt)
 	
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
+
+	timer += dt;
+
+	if (timer >= 2.f)
+	{
+		Item* item = &Item::SpawnItem();
+		item->Init();
+		item->Reset();
+		AddGameObject(item);
+		timer = 0;
+		player->SetItem(item);
+	}
+
+
+
+
+
+
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -168,10 +179,5 @@ void SceneGame::WaveUpgrade()
 	ZOMBIE_MGR.SpawnZombie(zombieCount, cellCount.x * 50.f / 2.5f);
 }
 
-
-//void SceneGame::Draw(sf::RenderWindow& window)
-//{
-//	Scene::Draw(window);
-//}
-					 
+		 
 				

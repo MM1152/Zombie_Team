@@ -4,6 +4,7 @@
 #include "Bullet.h"
 #include "HpBar.h"
 #include "TextBullet.h"
+#include "AmmoItem.h"
 
 
 Player::Player(const std::string& name)
@@ -61,7 +62,6 @@ void Player::Reset()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
-	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) // �� �ʱ�ȭ
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) 
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
@@ -94,7 +94,7 @@ void Player::Reset()
 	hitAble = true;
 	isAlive = true;
 	hp = maxHp;
-	hp = maxHp;		
+	
 
 }
 
@@ -124,8 +124,6 @@ void Player::Update(float dt)
 			++it;
 		}
 	}
-
-	
 
 	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // ���콺 ��ġ ��������
 	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // ���� ��ǥ�� ��ȯ
@@ -172,11 +170,22 @@ void Player::Update(float dt)
 
 	if (InputMgr::GetKeyDown(sf::Keyboard::R) && !isReloading)
 	{
+
 		isReloading = true; // ������ ���·� ����
 		reloadTimer = 0.f; // ������ Ÿ�̸� �ʱ�ȭ
 	}	
 
-
+	for (auto item : itemList)
+	{
+		if (Utils::CheckCollision(hitBox.rect, item->GetHitBox().rect))
+		{
+			if (item->GetActive())
+			{
+			  item->UseItem(this);
+			  item->SetActive(false);
+			}
+		}
+	}
 }
 
 void Player::Draw(sf::RenderWindow& window)
@@ -228,13 +237,29 @@ void Player::OnDamage(int damage)
 	{
 		hp = 0;
 		
-		isAlive = false; // �÷��̾ �׾����� ǥ��
+		isAlive = false;
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
 	hpbar->SettingHp(hp, maxHp);
 }
 
-void Player::SetTextBullet(TextBullet* textBullet) // TextBullet�� �����ϴ� �Լ�
+void Player::SetTextBullet(TextBullet* textBullet) 
 {
-	this->textBullet = textBullet; // �ڱ��ڽ��� TextBullet�� ����
+	this->textBullet = textBullet; 
+}
+
+void Player::SetItem(Item* item)
+{
+	itemList.push_back(item);
+}
+
+void Player::Heal(int healamount)
+{
+	hp += healamount;
+}
+
+void Player::Ammo(int Ammoamount)
+{
+	curBullet += Ammoamount;
+	maxBullet += Ammoamount;
 }

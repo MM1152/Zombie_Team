@@ -12,6 +12,7 @@ class TextBullet;
 class Wave;
 class TileMap;
 class HealItem;
+class AmmoItem;
 
 class SceneGame : public Scene
 {
@@ -24,6 +25,9 @@ protected:
 	Wave* wave;
 	TileMap* tileMap;
 	HealItem* healItem;
+	AmmoItem* Ammoitem;
+
+	float timer = 0.f;
 
 	int waveValue;
 	int zombieCount;
