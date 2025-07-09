@@ -32,5 +32,6 @@ enum class Sides
 {
 	Left,
 	Right,
-	None,
+	Up,
+	Down,
 };

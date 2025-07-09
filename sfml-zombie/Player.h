@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "HitBox.h"
+#include "TileMap.h"
 
 class SceneGame;
 class Bullet;
@@ -14,6 +16,8 @@ protected:
 	sf::Vector2f direction; // 플레이어 이동 방향
 	sf::Vector2f look; // 플레이어 시선 방향
 
+	HitBox hitBox; // 재문 추가
+	TileMap* tileMap;
 	int hp = 0;
 	int maxHp = 1000;
 	bool isAlive = true; // 플레이어 생존 여부
@@ -43,6 +47,20 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	sf::FloatRect GetGlobalBounds() const override
+	{
+		return body.getGlobalBounds();
+	}
+
+	sf::FloatRect GetLocalBounds() const override
+	{
+		return body.getLocalBounds();
+	}
+	const HitBox& GetHitBox() const
+	{
+		return hitBox;
+	}
 
 	void Shoot();
 	void OnDamage(int damage);
