@@ -14,7 +14,6 @@ protected:
 	TextScore* textScore;
 	HpBar* hpbar;
 	TextBullet* textBullet;
-
 public:
 	SceneDev1();
 	~SceneDev1() override;

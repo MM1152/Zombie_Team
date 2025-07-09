@@ -13,6 +13,7 @@
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 {
+	
 }
 
 SceneDev1::~SceneDev1()

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Scene.h"
+#include "SceneGame.h"
 
 Scene::Scene(SceneIds id)
 	: Id(id)
@@ -47,6 +48,7 @@ void Scene::Enter()
 		obj->Reset();
 	}
 }
+
 
 void Scene::Exit()
 {
