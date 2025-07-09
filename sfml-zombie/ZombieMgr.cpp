@@ -45,11 +45,11 @@ void ZombieMgr::Update(float dt)
 		//std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
 	}
 	
-	if (InputMgr::GetKeyDown(sf::Keyboard::D)) {
-		for (Zombie* zombie : zombieList) {
-			zombie->OnDamage(1000000);
-		}
-	}
+	//if (InputMgr::GetKeyDown(sf::Keyboard::D)) {
+	//	for (Zombie* zombie : zombieList) {
+	//		zombie->OnDamage(1000000);
+	//	}
+	//}
 }
 
 void ZombieMgr::Release()

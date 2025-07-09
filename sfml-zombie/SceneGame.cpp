@@ -47,6 +47,16 @@ void SceneGame::Init()
 
 	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
+
+
+
+	player->SetTextBullet(textBullet); // 플레이어에 연결해야 SetBulletCount(int curCount, int maxCount) 가 업데이트됨
+
+
+
+
+
+
 	Scene::Init();
 }
 
@@ -70,7 +80,7 @@ void SceneGame::Update(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
 		ZOMBIE_MGR.SpawnZombie(1);
-		textBullet->SetBulletCount(10, 20);
+		textBullet->SetBulletCount(20, 20);
 	}
 	
 	int count = ZOMBIE_MGR.GetDieZombieCount();

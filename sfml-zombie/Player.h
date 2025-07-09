@@ -1,10 +1,11 @@
 #pragma once
 #include "GameObject.h"
 #include "TextBullet.h"
+#include "HitBox.h"
 
 class SceneGame;
 class Bullet;
-
+class TextBullet;
 
 
 class Player : public GameObject
@@ -26,16 +27,19 @@ protected:
 
 	Bullet* bullet;
 	SceneGame* sceneGame = nullptr; // 플레이어가 속한 게임 씬
+	HitBox hitBox; // 플레이어의 히트박스
 
 	std::list<Bullet*> bulletList; // 총알 리스트
 	std::list<Bullet*> bulletPool; // 총알 풀 (재사용을 위한)
 
 
+	TextBullet* textBullet; 
+
 	int curBullet = 0;
 	int maxBullet = 20;
-	float reloadTime = 1.0f; // 장전 시간(초)
-	bool isReloading = false;
-	float reloadTimer = 0.f;
+	float reloadTime = 1.5f; // 장전 시간(초)
+	bool isReloading = false; // 장전 중 여부
+	float reloadTimer = 0.f; 
 
 public:
 	Player(const std::string& name = "");
@@ -55,6 +59,25 @@ public:
 
 	void Shoot();
 	void OnDamage(int damage);
+	void SetTextBullet(TextBullet* textBullet);
+
+
+	sf::FloatRect GetLocalBounds() const override
+	{
+		return body.getLocalBounds();
+	}
+
+	sf::FloatRect GetGlobalBounds() const override
+	{
+		return body.getGlobalBounds();
+	}
+
+
+	const HitBox& GetHitBox() const
+	{
+		return hitBox;
+	}
+
 
 };
 

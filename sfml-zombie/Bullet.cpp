@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Bullet.h"
 #include "SceneGame.h"
+#include "ZombieMgr.h"
+#include "Zombie.h"
 
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
@@ -72,11 +74,27 @@ void Bullet::Reset()
 void Bullet::Update(float dt)
 {
 	SetPosition(position + direction * speed * dt); // 위치 업데이트
+	hitBox.UpdateTransform(body, GetGlobalBounds()); // 히트박스 업데이트
+
+	const auto& list = ZOMBIE_MGR.GetZombieList();
+	for(Zombie* zombie : list )
+	{
+		sf::RectangleShape rect1 = { zombie->GetLocalBounds().width , zombie->GetLocalBounds().height};
+			if (Utils::CheckCollision(hitBox.rect, rect1)
+			{
+				SetActive(false); // 총알 비활성화
+				zombie->OnDamage(damage); // 좀비에게 데미지 적용
+				break; // 충돌이 발생하면 루프를 종료
+			}
+		
+	}
+	
 }
 
 void Bullet::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
 }
 
 void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float spd, int dmg)
@@ -88,3 +106,4 @@ void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float spd, i
 
 	SetRotation(Utils::Angle(direction)); // 방향에 따라 회전 설정 
 }
+

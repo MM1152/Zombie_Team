@@ -50,6 +50,7 @@ void Player::Init()
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
 
+	curBullet = maxBullet;
 	
 }
 
@@ -88,11 +89,8 @@ void Player::Reset()
 	shootInterval = 0.1f; 
 
 	hp = maxHp;		
-	 
-	 
 
 }
-
 
 
 
@@ -122,18 +120,58 @@ void Player::Update(float dt)
 		}
 	}
 
+	
 
 	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // 마우스 위치 가져오기
 	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // 월드 좌표로 변환
 	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // 플레이어가 바라보는 방향 계산
 	SetRotation(Utils::Angle(look)); // 플레이어 회전 설정
 	
+	
+	//if(InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer>shootInterval)
+	//{
+	//	Shoot();
+	//	shootTimer = 0.f;	
+	//}
 	shootTimer += dt; // 슈팅 타이머 업데이트
-	if(InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer>shootInterval)
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval && curBullet > 0)
 	{
 		Shoot();
-		shootTimer = 0.f;	
+		curBullet--; // 총알 감소
+		shootTimer = 0.f; // 슈팅 타이머 초기화
+
+		if (textBullet)
+		{
+			textBullet->SetBulletCount(curBullet, maxBullet);
+		}
 	}
+
+
+	if (isReloading) // 재장전 중이면
+	{
+		reloadTimer += dt; // 재장전 타이머 업데이트
+		if (reloadTimer >= reloadTime) // 재장전 시간이 다 되면
+		{
+			curBullet = maxBullet ;
+			isReloading = false; // 재장전 상태 해제
+			reloadTimer = 0.f; // 재장전 타이머 초기화
+
+			if (textBullet)
+			{
+				textBullet->SetBulletCount(curBullet, maxBullet);
+			}
+		}
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::R))
+	{
+		if (curBullet < maxBullet)
+		{
+			isReloading = true; // 재장전 상태로 변경
+			reloadTimer = 0.f; // 재장전 타이머 초기화
+		}
+	}	
+
 
 }
 
@@ -141,6 +179,7 @@ void Player::Update(float dt)
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
 }
 
 
@@ -164,6 +203,7 @@ void Player::Shoot()
 
 	bulletList.push_back(bullet); // 총알 리스트에 추가
 	sceneGame->AddGameObject(bullet);
+	
 }
 
 void Player::OnDamage(int damage)
@@ -180,4 +220,9 @@ void Player::OnDamage(int damage)
 		isAlive = false; // 플레이어가 죽었음을 표시
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
+}
+
+void Player::SetTextBullet(TextBullet* textBullet) // TextBullet을 설정하는 함수
+{
+	this->textBullet = textBullet; // 자기자신을 TextBullet에 설정
 }

@@ -33,6 +33,7 @@ public:
 	void SpawnZombie(int count);
 	void SettingScene(Scene* scene);
 	void SettingPlayer(Player* player);
+	std::list<Zombie*>& GetZombieList() { return zombieList; };
 };
 
 #define ZOMBIE_MGR ZombieMgr::Instance()
