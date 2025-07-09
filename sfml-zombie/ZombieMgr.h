@@ -17,8 +17,8 @@ protected:
 	
 	std::list<Blood*> bloodList;
 	std::list<Blood*> bloodPool;
-	Scene* scene;
-	Player* player;
+	Scene* scene = nullptr;
+	Player* player = nullptr;
 	int dieZombie = 0;
 
 	void SpawnBlood(const sf::Transformable& trans);

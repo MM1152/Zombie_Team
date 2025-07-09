@@ -61,8 +61,6 @@ void Zombie::Update(float dt)
 	//TODO : 플레이어 실시간 위치값으로 변경
 	dir = player->GetPosition() - GetPosition();
 	Utils::Normalize(dir);
-	std::cout << dir.x << ", " << dir.y << std::endl;
-	std::cout << (player->GetPosition() - GetPosition()).x << std::endl;
 	SetPosition(GetPosition() + dir * speed * dt);
 	SetRotation(Utils::Angle(dir));
 
