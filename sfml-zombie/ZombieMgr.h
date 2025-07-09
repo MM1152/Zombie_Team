@@ -30,7 +30,7 @@ public:
 	void Enter();
 
 	int GetDieZombieCount() const { return dieZombie; };
-	void SpawnZombie(int count);
+	void SpawnZombie(int count , float radious);
 	void SettingScene(Scene* scene);
 	void SettingPlayer(Player* player);
 };

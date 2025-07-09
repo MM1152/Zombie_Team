@@ -81,9 +81,6 @@ void TileMap::Init()
 	// 레이어 젤 뒤에 설정
 	sortingLayer = SortingLayers::Background;
 	sortingOrder = 0;
-
-	
-	Set({ 50, 50 }, { 50.f, 50.f });
 }
 
 void TileMap::Release()

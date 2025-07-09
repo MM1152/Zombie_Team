@@ -67,7 +67,7 @@ void ZombieMgr::Enter()
 	zombieList.clear();
 }
 
-void ZombieMgr::SpawnZombie(int count)
+void ZombieMgr::SpawnZombie(int count , float radious)
  {
 	for (int i = 0; i < count; i++) {
 		Zombie* zombie;
@@ -84,7 +84,7 @@ void ZombieMgr::SpawnZombie(int count)
 		zombieList.push_back(zombie);
  		zombie->Reset();
 		zombie->SetActive(true);
-		zombie->SetPosition(Utils::RandomOnUnitCircle() * 300.f);
+		zombie->SetPosition(Utils::RandomOnUnitCircle() * radious);
 	}
 }
 

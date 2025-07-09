@@ -39,12 +39,13 @@ void SceneGame::Init()
 	hpbar = new HpBar();
 	textBullet = new TextBullet();
 	wave = new Wave();
+	tileMap = new TileMap("TileMap");
 
 	AddGameObject(textBullet);
 	AddGameObject(hpbar);
 	AddGameObject(textScore);
 	player = (Player*)AddGameObject(new Player("Player"));
-	AddGameObject(new TileMap("TileMap"));
+	AddGameObject(tileMap);
 	AddGameObject(wave);
 
 
@@ -58,6 +59,21 @@ void SceneGame::Enter()
 {
 	ZOMBIE_MGR.Enter();
 	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2});
+
+	waveValue = 1;
+	cellCount = { 10 , 10 };
+
+	tileMap->Set((sf::Vector2i)cellCount, { 50, 50 });
+
+	zombieCount = waveValue * 5;
+	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
+
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x  - 500.f, FRAMEWORK.GetWindowSizeF().y - 200.f});
+	gameStop = false;
+
+	waveValue++;
 	Scene::Enter(); // 항상 부모의 클래스 enter를 호출해야 합니다.
 }
 
@@ -72,27 +88,44 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
-		int zombieCount = waveValue * 5;
-		ZOMBIE_MGR.SpawnZombie(zombieCount);
-		wave->SetWaveString(waveValue);
-		wave->SetZombieCount(zombieCount);
-		waveValue++;
 
+	int count = ZOMBIE_MGR.GetDieZombieCount();
+	zombieCount -= count;
+	textScore->SetScore(count * 10.f);
+	wave->SetZombieCount(zombieCount);
+	if (zombieCount == 0) {
+		gameStop = true;
+	}
+
+	if (gameStop && InputMgr::GetKeyDown(sf::Keyboard::Enter)) {
+		WaveUpgrade();
+		gameStop = false;
 	}
 	
-	int count = ZOMBIE_MGR.GetDieZombieCount();
-	textScore->SetScore(count * 10.f);
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 }
 
-
-
-
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+}
+
+void SceneGame::WaveUpgrade()
+{
+	cellCount = cellCount *  1.3f,
+	tileMap->Set((sf::Vector2i)cellCount , { 50, 50 });
+	tileMap->Reset();
+
+	zombieCount = waveValue * 5;
+	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
+
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+
+	gameStop = false;
+
+	waveValue++;
 }
 					 
 				
