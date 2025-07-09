@@ -41,7 +41,6 @@ void SceneDev1::Init()
 	textScore = new TextScore();
 	hpbar = new HpBar();
 	textBullet = new TextBullet();
-	
 
 	AddGameObject(textBullet);
 	AddGameObject(hpbar);

@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+
+class Player;
 class Zombie : public GameObject
 {
 protected:
@@ -12,6 +14,8 @@ protected:
 	float speed;
 	sf::Vector2f targetPos;
 	sf::Vector2f dir;
+
+	Player* player;
 	// 플레이어 연결 필요
 public:
 	enum class Types {
@@ -38,6 +42,7 @@ public:
 
 	void SetType(Types type);
 	void OnDamage(int damage);
+	void SetPlayer(Player* player);
 	const sf::Sprite& GetSprite() const { return body; };
 };
 

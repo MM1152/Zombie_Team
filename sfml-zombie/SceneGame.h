@@ -3,12 +3,21 @@
 
 
 class Player;
+class TextGo;
+class Zombie;
+class TextScore;
+class HpBar;
+class TextBullet;
 
 class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
-
+	Zombie* zombie;
+	TextScore* textScore;
+	HpBar* hpbar;
+	TextBullet* textBullet;
+	
 public:
 	SceneGame();
 	~SceneGame() override = default;

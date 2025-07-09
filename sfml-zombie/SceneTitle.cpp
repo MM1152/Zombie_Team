@@ -36,6 +36,9 @@ void SceneTitle::Enter()
 	worldView.setSize(windowSize);
 	worldView.setCenter(windowSize * 0.5f);
 
+	uiView.setSize(windowSize);
+	uiView.setCenter(windowSize * 0.5f);
+
 	Scene::Enter();
 }
 
@@ -50,7 +53,7 @@ void SceneTitle::Update(float dt)
 {
 	if (InputMgr::GetMouseButton(sf::Mouse::Left))
 	{
-		SCENE_MGR.ChangeScene(SceneIds::Dev1);
+		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
 	Scene::Update(dt);
 }

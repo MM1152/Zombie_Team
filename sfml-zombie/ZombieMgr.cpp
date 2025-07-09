@@ -42,6 +42,7 @@ void ZombieMgr::Update(float dt)
 	
 	for (Zombie* zombie : zombieList) {
 		zombie->Update(dt);
+		std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
 	}
 	
 	if (InputMgr::GetKeyDown(sf::Keyboard::D)) {
@@ -69,6 +70,7 @@ void ZombieMgr::SpawnZombie(int count)
 			zombie = new Zombie();
 			zombie->Init();
 			scene->AddGameObject(zombie);
+			zombie->SetPlayer(player);
 		}
 		else {
 			zombie = zombiePool.front();
@@ -87,3 +89,6 @@ void ZombieMgr::SettingScene(Scene* scene)
 	this->scene = scene;
 }
 
+void ZombieMgr::SettingPlayer(Player* player) {
+	this->player = player;
+}

@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "Zombie.h"
-
+#include "Player.h"
 Zombie::Zombie(const std::string& name)
 	:GameObject(name)
 {
@@ -59,7 +59,7 @@ void Zombie::Reset()
 void Zombie::Update(float dt)
 {	
 	//TODO : 플레이어 실시간 위치값으로 변경
-	dir = targetPos - GetPosition();
+	dir = player->GetPosition() - GetPosition();
 	Utils::Normalize(dir);
 	SetPosition(GetPosition() + dir * speed * dt);
 	SetRotation(Utils::Angle(dir));
@@ -103,4 +103,9 @@ void Zombie::OnDamage(int damage)
 	if (hp == 0) {
 		SetActive(false);
 	}
+}
+
+void Zombie::SetPlayer(Player* player)
+{
+	this->player = player;
 }
