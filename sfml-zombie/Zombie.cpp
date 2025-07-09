@@ -61,13 +61,18 @@ void Zombie::Update(float dt)
 	//TODO : 플레이어 실시간 위치값으로 변경
 	dir = player->GetPosition() - GetPosition();
 	Utils::Normalize(dir);
+	std::cout << dir.x << ", " << dir.y << std::endl;
+	std::cout << (player->GetPosition() - GetPosition()).x << std::endl;
 	SetPosition(GetPosition() + dir * speed * dt);
 	SetRotation(Utils::Angle(dir));
+
+	hitBox.UpdateTransform(body, GetLocalBounds());
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
 }
 
 void Zombie::SetType(Types type)
@@ -76,21 +81,21 @@ void Zombie::SetType(Types type)
 		maxHp = 500;
 		hp = maxHp;
 
-		speed = 75;
+		speed = 50;
 		texId = "graphics/bloater.png";
 	}
 	else if (type == Types::Chaser) {
 		maxHp = 200;
 		hp = maxHp;
 
-		speed = 120;
+		speed = 75;
 		texId = "graphics/chaser.png";
 	}
 	else if (type == Types::Crawler) {
 		maxHp = 100;
 		hp = maxHp;
 
-		speed = 150;
+		speed = 100;
 		texId = "graphics/crawler.png";
 	}
 

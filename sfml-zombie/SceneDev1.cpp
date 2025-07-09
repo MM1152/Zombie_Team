@@ -23,7 +23,6 @@ SceneDev1::~SceneDev1()
 
 void SceneDev1::Init()
 {
-	ZOMBIE_MGR.SettingScene(this);
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize({FRAMEWORK.GetWindowSizeF().x, FRAMEWORK.GetWindowSizeF().y });
 

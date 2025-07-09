@@ -42,7 +42,7 @@ void ZombieMgr::Update(float dt)
 	
 	for (Zombie* zombie : zombieList) {
 		zombie->Update(dt);
-		std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
+		//std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
 	}
 	
 	if (InputMgr::GetKeyDown(sf::Keyboard::D)) {
@@ -59,7 +59,10 @@ void ZombieMgr::Release()
 
 void ZombieMgr::Enter()
 {
-	
+	for (auto i : zombieList) {
+		zombiePool.push_back(i);
+	}
+	zombieList.clear();
 }
 
 void ZombieMgr::SpawnZombie(int count)

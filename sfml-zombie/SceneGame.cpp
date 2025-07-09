@@ -14,7 +14,7 @@ SceneGame::SceneGame(): Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
-	ZOMBIE_MGR.SettingScene(this);
+	
 
 	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // 얘네 추가하면 안납작함
 	worldView.setCenter({ 0.f , 0.f });
@@ -33,6 +33,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/player.png");
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/background_sheet.png");
+
 	textScore = new TextScore();
 	hpbar = new HpBar();
 	textBullet = new TextBullet();
@@ -43,6 +44,8 @@ void SceneGame::Init()
 	AddGameObject(textScore);
 	player = (Player*)AddGameObject(new Player("Player"));
 	AddGameObject(new TileMap("TileMap"));
+
+	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
 	Scene::Init();
 }
@@ -50,6 +53,7 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
+	ZOMBIE_MGR.Enter();
 	Scene::Enter(); // 항상 부모의 클래스 enter를 호출해야 합니다.
 }
 
