@@ -5,8 +5,8 @@
 class SceneTitle : public Scene
 {
 protected:
-	Button* text;
-	Button* text2;
+	Button* startText;
+	Button* exitText;
 	
 	sf::Vector2f windowSize;
 public:

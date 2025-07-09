@@ -10,10 +10,13 @@ Button::Button(const std::string& fontId, const std::string& name) : TextGo("fon
 void Button::setText(std::string text)
 {
 	SetString(text);
+	shape.setSize({ this->text.getString().getSize() * ((float)this->text.getCharacterSize() * 0.7f) , (float)this->text.getCharacterSize() * 2.f});
+	Utils::SetOrigin(shape, Origins::MC);
+
 }
 void Button::setCharacterSize(sf::RectangleShape rect)
 {
-	int size = (rect.getSize().x * 0.5);
+	int size = (rect.getSize().x * 0.3f);
 	SetCharacterSize(size);
 }
 void Button::setTextFillColor(sf::Color color)
@@ -43,7 +46,6 @@ void Button::setShapeFillColor(sf::Color color)
 void Button::setShapePosition(sf::Vector2f pos)
 {
 	shape.setPosition(pos);
-	
 }
 
 void Button::setShapeOrigin()
@@ -89,12 +91,12 @@ void Button::Update(float dt)
 		
 		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 		{
-			isPressed = true;
+			if(buttonPtr != nullptr)
+				buttonPtr();
 		}
 	}
 	else
 	{
-		
 		isPressed = false;
 	}
 

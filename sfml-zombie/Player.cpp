@@ -61,7 +61,6 @@ void Player::Reset()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
-	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) // �� �ʱ�ȭ
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) 
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
@@ -94,8 +93,6 @@ void Player::Reset()
 	hitAble = true;
 	isAlive = true;
 	hp = maxHp;
-	hp = maxHp;		
-
 }
 
 
@@ -104,12 +101,9 @@ void Player::Update(float dt)
 {
 	direction.x = InputMgr::GetAxis(Axis::Horizontal); 
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
-
-	if (Utils::Magnitude(direction) > 1.f) 
-	{
-		Utils::Normalize(direction); 
-	}
-	SetPosition(position + direction * speed * dt); 
+	Utils::Normalize(direction); 
+	SetPosition(GetPosition() + direction * speed * dt); 
+	std::cout << GetPosition().x << ", " << GetPosition().y << std::endl;
 
 	auto it = bulletList.begin(); 
 	while (it != bulletList.end()) 
@@ -124,9 +118,7 @@ void Player::Update(float dt)
 			++it;
 		}
 	}
-
 	
-
 	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // ���콺 ��ġ ��������
 	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // ���� ��ǥ�� ��ȯ
 	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // �÷��̾ �ٶ󺸴� ���� ���

@@ -13,6 +13,8 @@ protected:
 
 	HitBox mouseHitBox;
 
+	void(*buttonPtr)() = nullptr;
+
 	bool isPressed = false;
 
 public:
@@ -25,6 +27,8 @@ public:
 	void setTextFillColor(sf::Color color);
 	void setTextPosition(sf::RectangleShape rect);
 	void setTextOrigin(Origins origin);
+	
+	void setButtonPtr(void(*vv)()) { buttonPtr = vv; }
 
 	// shape 설정 함수
 	void setShapeSize(sf::Vector2f size);
