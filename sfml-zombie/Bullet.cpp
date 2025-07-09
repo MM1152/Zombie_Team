@@ -42,17 +42,11 @@ void Bullet::SetOrigin(Origins preset)
 	}
 }
 
-
-
-
 void Bullet::Init()
 {
 	sortingLayer = SortingLayers::Foreground; // 솔팅 레이어 설정
 	sortingOrder = 1;
 }
-
-
-
 
 void Bullet::Release()
 {

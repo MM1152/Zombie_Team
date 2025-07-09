@@ -65,16 +65,11 @@ void SceneGame::Init()
 	healItem = new HealItem("HealItem");
 	AddGameObject(healItem);
 
-
 	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
 	player->SettingHpBar(hpbar);
 
-
-
 	player->SetTextBullet(textBullet); // 플레이어에 연결해야 SetBulletCount(int curCount, int maxCount) 가 업데이트됨
-
-	
 
 	Scene::Init();
 }
@@ -106,7 +101,7 @@ void SceneGame::Enter()
 	// Up1
 	upGrade1->setShapeSize({ 200.f,200.f });
 	upGrade1->setShapeFillColor(sf::Color::Blue);
-	upGrade1->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.2f });
+	upGrade1->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.1f });
 	upGrade1->setShapeOrigin();
 	
 	upGrade1->setCharacterSize(upGrade1->GetShape());
@@ -120,65 +115,65 @@ void SceneGame::Enter()
 		});
 	
 	// Up2
-	upGrade2->setShapeSize({ 400.f,200.f });
+	upGrade2->setShapeSize({ 200.f,200.f });
 	upGrade2->setShapeFillColor(sf::Color::Blue);
-	upGrade2->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.4f });
+	upGrade2->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.3f });
 	upGrade2->setShapeOrigin();
 		   
-	upGrade2->setText("2");
 	upGrade2->setCharacterSize(upGrade2->GetShape());
+	upGrade2->setText("INCREASED CLIP SIZE (NEXT RELOAD)");
 	upGrade2->setTextFillColor(sf::Color::Red);
 	upGrade2->setTextPosition(upGrade2->GetShape());
 	upGrade2->setTextOrigin(Origins::MC);
 	upGrade2->SetActive(false);
 
 	// Up3
-	upGrade3->setShapeSize({ 400.f,200.f });
+	upGrade3->setShapeSize({ 200.f,200.f });
 	upGrade3->setShapeFillColor(sf::Color::Blue);
-	upGrade3->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.6f });
+	upGrade3->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.5f });
 	upGrade3->setShapeOrigin();
 		   
-	upGrade3->setText("3");
 	upGrade3->setCharacterSize(upGrade3->GetShape());
+	upGrade3->setText("INCREASED MAX HEALTH");
 	upGrade3->setTextFillColor(sf::Color::Red);
 	upGrade3->setTextPosition(upGrade3->GetShape());
 	upGrade3->setTextOrigin(Origins::MC);
 	upGrade3->SetActive(false);
 
 	// Up4
-	upGrade4->setShapeSize({ 400.f,200.f });
+	upGrade4->setShapeSize({ 200.f,200.f });
 	upGrade4->setShapeFillColor(sf::Color::Blue);
-	upGrade4->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.8f });
+	upGrade4->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.7f });
 	upGrade4->setShapeOrigin();
 		   
-	upGrade4->setText("4");
 	upGrade4->setCharacterSize(upGrade4->GetShape());
+	upGrade4->setText("INCREASED RUN SPEED");
 	upGrade4->setTextFillColor(sf::Color::Red);
 	upGrade4->setTextPosition(upGrade4->GetShape());
 	upGrade4->setTextOrigin(Origins::MC);
 	upGrade4->SetActive(false);
 
 	// Up5
-	upGrade5->setShapeSize({ 400.f,200.f });
+	upGrade5->setShapeSize({ 200.f,200.f });
 	upGrade5->setShapeFillColor(sf::Color::Blue);
-	upGrade5->setShapePosition({ bounds.width * 0.5f, bounds.height * 1.0f });
+	upGrade5->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.9f });
 	upGrade5->setShapeOrigin();
 		   
-	upGrade5->setText("5");
 	upGrade5->setCharacterSize(upGrade5->GetShape());
+	upGrade5->setText("MORE AND BETTER HEALTH PICKUPS");
 	upGrade5->setTextFillColor(sf::Color::Red);
 	upGrade5->setTextPosition(upGrade5->GetShape());
 	upGrade5->setTextOrigin(Origins::MC);
 	upGrade5->SetActive(false);
 
 	// Up6
-	upGrade6->setShapeSize({ 400.f,200.f });
+	upGrade6->setShapeSize({ 200.f,200.f });
 	upGrade6->setShapeFillColor(sf::Color::Blue);
-	upGrade6->setShapePosition({ bounds.width * 0.8f, bounds.height * 0.8f });
+	upGrade6->setShapePosition({ bounds.width * 0.5f, bounds.height * 1.0f });
 	upGrade6->setShapeOrigin();
 		   
-	upGrade6->setText("6");
 	upGrade6->setCharacterSize(upGrade6->GetShape());
+	upGrade6->setText("MORE AND BETTER AMMO PICKUPS");
 	upGrade6->setTextFillColor(sf::Color::Red);
 	upGrade6->setTextPosition(upGrade6->GetShape());
 	upGrade6->setTextOrigin(Origins::MC);
