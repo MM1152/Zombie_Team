@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SceneTitle.h"
 #include "SpriteGo.h"
+#include "Button.h"
+
 SceneTitle::SceneTitle()
 	: Scene(SceneIds::Title)
 {
@@ -13,25 +15,43 @@ void SceneTitle::ChangeScene()
 void SceneTitle::Enter()
 {
 	AddGameObject(new SpriteGo("graphics/background.png"));
-	start = (TextGo*)(AddGameObject(new TextGo("fonts/zombiecontrol.ttf")));
-	exit = (TextGo*)(AddGameObject(new TextGo("fonts/zombiecontrol.ttf")));
+	startText = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	exitText = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	//exit = (TextGo*)(AddGameObject(new TextGo("fonts/zombiecontrol.ttf")));
 	
 	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
-	sf::Vector2f startPos = { bounds.width * 0.5f,bounds.height * 0.5f };
-	sf::Vector2f exitPos = { bounds.width * 0.5f,bounds.height * 0.7f };
+	startText->setShapeSize({ 200.f,200.f });
+	startText->setShapeFillColor(sf::Color::Blue);
+	startText->setShapePosition({ bounds.width * 0.8f, bounds.height * 0.8f });
+	startText->setShapeOrigin();
+	
 
-	start->SetString("Start");
-	start->SetCharacterSize(150);
-	start->SetFillColor(sf::Color::White);
-	start->SetOrigin(Origins::MC);
-	start->SetPosition(startPos);
+	startText->setCharacterSize(startText->GetShape());
+	startText->setText("Start");
+	startText->setTextFillColor(sf::Color::Black);
+	startText->setTextPosition(startText->GetShape());
+	startText->setTextOrigin(Origins::MC);
+	//AddGameObject(text);
 
-	exit->SetString("Exit");
-	exit->SetCharacterSize(150);
-	exit->SetFillColor(sf::Color::White);
-	exit->SetOrigin(Origins::MC);
-	exit->SetPosition(exitPos);
+	exitText->setShapeSize({ 200.f,200.f });
+	exitText->setShapeFillColor(sf::Color::Blue);
+	exitText->setShapePosition({ bounds.width * 0.2f, bounds.height * 0.8f });
+	exitText->setShapeOrigin();
+	
+	exitText->setCharacterSize(exitText->GetShape());
+	exitText->setText("Exit");
+	exitText->setTextFillColor(sf::Color::Black);
+	exitText->setTextPosition(exitText->GetShape());
+	exitText->setTextOrigin(Origins::MC);
+	//AddGameObject(text2);
 
+	startText->setButtonPtr([] {
+		SCENE_MGR.ChangeScene(SceneIds::Game);
+	});
+
+	exitText->setButtonPtr([] {
+		FRAMEWORK.GetWindow().close();
+	});
 	windowSize = FRAMEWORK.GetWindowSizeF();
 	worldView.setSize(windowSize);
 	worldView.setCenter(windowSize * 0.5f);
@@ -51,10 +71,14 @@ void SceneTitle::Init()
 
 void SceneTitle::Update(float dt)
 {
-	if (InputMgr::GetMouseButton(sf::Mouse::Left))
+	/*if (startText->GetIsPressed())
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
+	if (exitText->GetIsPressed())
+	{
+		FRAMEWORK.GetWindow().close();
+	}*/
 	Scene::Update(dt);
 }
 

@@ -101,12 +101,9 @@ void Player::Update(float dt)
 {
 	direction.x = InputMgr::GetAxis(Axis::Horizontal); 
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
-
-	if (Utils::Magnitude(direction) > 1.f) 
-	{
-		Utils::Normalize(direction); 
-	}
-	SetPosition(position + direction * speed * dt); 
+	Utils::Normalize(direction); 
+	SetPosition(GetPosition() + direction * speed * dt); 
+	//std::cout << GetPosition().x << ", " << GetPosition().y << std::endl;
 
 	auto it = bulletList.begin(); 
 	while (it != bulletList.end()) 
@@ -121,13 +118,13 @@ void Player::Update(float dt)
 			++it;
 		}
 	}
-
+	
 	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // ���콺 ��ġ ��������
 	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // ���� ��ǥ�� ��ȯ
 	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // �÷��̾ �ٶ󺸴� ���� ���
 	SetRotation(Utils::Angle(look)); 
 	
-	hitBox.UpdateTransform(body, GetLocalBounds());
+	hitBox.UpdateTransform(body, GetLocalBounds());	
 
 	shootTimer += dt; 
 	if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval && curBullet > 0)

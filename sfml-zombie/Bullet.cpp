@@ -4,6 +4,9 @@
 #include "ZombieMgr.h"
 #include "Zombie.h"
 
+float Bullet::speed = 100;
+int Bullet::damage = 10;
+
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
 {

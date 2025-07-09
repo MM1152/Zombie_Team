@@ -11,6 +11,8 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 	cellCount = count;
 	cellSize = size;
 
+	hitBoxes.clear();	
+	
 	// VertexArray ÃÊ±âÈ­
 	va.clear();
 	va.setPrimitiveType(sf::Quads);
@@ -112,8 +114,6 @@ void TileMap::Update(float dt)
 	pos.y = Utils::Clamp(pos.y, 50 - GetOrigin().y, cellSize.y * cellCount.y - GetOrigin().y);
 
 	player->SetPosition(pos);
-
-
 }
 
 void TileMap::Draw(sf::RenderWindow& window)

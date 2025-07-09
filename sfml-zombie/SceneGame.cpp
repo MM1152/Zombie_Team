@@ -7,6 +7,7 @@
 #include "HpBar.h"
 #include "TextBullet.h"
 #include "TileMap.h"
+#include "Button.h" 
 #include "Wave.h"
 #include "Item.h"
 #include "HealItem.h"
@@ -17,9 +18,9 @@ SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
 }
 
-
 void SceneGame::Init()
 {
+	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ��� �߰��ϸ� �ȳ�����
 	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // 얘네 추가하면 안납작함
 	worldView.setCenter({ 0.f , 0.f });
 
@@ -34,6 +35,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/blood.png");
 	texIds.push_back("graphics/ammo_icon.png");
 	texIds.push_back("graphics/crosshair.png");
+	texIds.push_back("graphics/background.png");
 
 	fontIds.push_back("fonts/zombiecontrol.ttf");
 
@@ -44,7 +46,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/health_pickup.png");
 	texIds.push_back("graphics/ammo_pickup.png");
 
-
+	
 	cursor = new SpriteGo("graphics/crosshair.png");
 	textScore = new TextScore();
 	hpbar = new HpBar();
@@ -53,12 +55,14 @@ void SceneGame::Init()
 	tileMap = new TileMap("TileMap");
 	player = new Player("Player");
 
-
+	
 	AddGameObject(textBullet);
 	AddGameObject(hpbar);
 	AddGameObject(textScore);
 	AddGameObject(player);
+	
 	AddGameObject(tileMap);
+	AddGameObject(player);
 	AddGameObject(wave);
 
 	AddGameObject(cursor);
@@ -75,17 +79,17 @@ void SceneGame::Init()
 	player->SetItem(Ammoitem);
 	player->SetTextBullet(textBullet); // 플레이어에 연결해야 SetBulletCount(int curCount, int maxCount) 가 업데이트됨
 
-
+	
 
 	Scene::Init();
 }
-
 
 void SceneGame::Enter()
 {
 	
 	ZOMBIE_MGR.Enter();
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
+	back = (SpriteGo*)AddGameObject(new SpriteGo("graphics/background.png"));
 
 	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2});
 
@@ -93,27 +97,121 @@ void SceneGame::Enter()
 	cellCount = { 10 , 10 };
 
 	zombieCount = waveValue * 5;
-	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
 
 	gameStop = false;
+	
+	// 여기에 넣어둘게 너무 길어질거 같아서 접어둘거임
+#pragma region UpGradeText
+	upGrade1 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	upGrade2 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	upGrade3 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	upGrade4 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	upGrade5 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	upGrade6 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+
+	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
+	// Up1
+	upGrade1->setShapeSize({ 200.f,200.f });
+	upGrade1->setShapeFillColor(sf::Color::Blue);
+	upGrade1->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.2f });
+	upGrade1->setShapeOrigin();
+	
+	upGrade1->setCharacterSize(upGrade1->GetShape());
+	upGrade1->setText("INCREASED RATE OF FIRE");
+	upGrade1->setTextFillColor(sf::Color::Red);
+	upGrade1->setTextPosition(upGrade1->GetShape());
+	upGrade1->setTextOrigin(Origins::MC);
+	upGrade1->SetActive(false);
+	upGrade1->setButtonPtr([this](){
+		Bullet::speed += 10;
+		Bullet::damage += 10;
+	});
+	
+	// Up2
+	upGrade2->setShapeSize({ 400.f,200.f });
+	upGrade2->setShapeFillColor(sf::Color::Blue);
+	upGrade2->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.4f });
+	upGrade2->setShapeOrigin();
+		   
+	upGrade2->setText("2");
+	upGrade2->setCharacterSize(upGrade2->GetShape());
+	upGrade2->setTextFillColor(sf::Color::Red);
+	upGrade2->setTextPosition(upGrade2->GetShape());
+	upGrade2->setTextOrigin(Origins::MC);
+	upGrade2->SetActive(false);
+
+	// Up3
+	upGrade3->setShapeSize({ 400.f,200.f });
+	upGrade3->setShapeFillColor(sf::Color::Blue);
+	upGrade3->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.6f });
+	upGrade3->setShapeOrigin();
+		   
+	upGrade3->setText("3");
+	upGrade3->setCharacterSize(upGrade3->GetShape());
+	upGrade3->setTextFillColor(sf::Color::Red);
+	upGrade3->setTextPosition(upGrade3->GetShape());
+	upGrade3->setTextOrigin(Origins::MC);
+	upGrade3->SetActive(false);
+
+	// Up4
+	upGrade4->setShapeSize({ 400.f,200.f });
+	upGrade4->setShapeFillColor(sf::Color::Blue);
+	upGrade4->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.8f });
+	upGrade4->setShapeOrigin();
+		   
+	upGrade4->setText("4");
+	upGrade4->setCharacterSize(upGrade4->GetShape());
+	upGrade4->setTextFillColor(sf::Color::Red);
+	upGrade4->setTextPosition(upGrade4->GetShape());
+	upGrade4->setTextOrigin(Origins::MC);
+	upGrade4->SetActive(false);
+
+	// Up5
+	upGrade5->setShapeSize({ 400.f,200.f });
+	upGrade5->setShapeFillColor(sf::Color::Blue);
+	upGrade5->setShapePosition({ bounds.width * 0.5f, bounds.height * 1.0f });
+	upGrade5->setShapeOrigin();
+		   
+	upGrade5->setText("5");
+	upGrade5->setCharacterSize(upGrade5->GetShape());
+	upGrade5->setTextFillColor(sf::Color::Red);
+	upGrade5->setTextPosition(upGrade5->GetShape());
+	upGrade5->setTextOrigin(Origins::MC);
+	upGrade5->SetActive(false);
+
+	// Up6
+	upGrade6->setShapeSize({ 400.f,200.f });
+	upGrade6->setShapeFillColor(sf::Color::Blue);
+	upGrade6->setShapePosition({ bounds.width * 0.8f, bounds.height * 0.8f });
+	upGrade6->setShapeOrigin();
+		   
+	upGrade6->setText("6");
+	upGrade6->setCharacterSize(upGrade6->GetShape());
+	upGrade6->setTextFillColor(sf::Color::Red);
+	upGrade6->setTextPosition(upGrade6->GetShape());
+	upGrade6->setTextOrigin(Origins::MC);
+	upGrade6->SetActive(false);
+#pragma endregion
 
 	Scene::Enter(); // �׻� �θ��� Ŭ���� enter�� ȣ���ؾ� �մϴ�.
+
+	back->sortingLayer = SortingLayers::UI;
+	back->sortingOrder = 0;
+	back->SetPosition({ 0.f,0.f });
+	back->SetActive(false);
 
 	tileMap->Set((sf::Vector2i)cellCount, { 50, 50 });
 	wave->SetWaveString(waveValue);
 	wave->SetZombieCount(zombieCount);
 	wave->SetPosition({ FRAMEWORK.GetWindowSizeF().x - 500.f, FRAMEWORK.GetWindowSizeF().y - 200.f });
-	Scene::Enter(); // 항상 부모의 클래스 enter를 호출해야 합니다.
+	ZOMBIE_MGR.SpawnZombie(zombieCount, cellCount.x * 50.f / 2.5f);
+	//Scene::Enter(); // 항상 부모의 클래스 enter를 호출해야 합니다.
 }
-
-
 
 void SceneGame::Exit()
 {
 	Scene::Exit();
 }
-
-
 
 void SceneGame::Update(float dt)
 {
@@ -125,13 +223,30 @@ void SceneGame::Update(float dt)
 	textScore->SetScore(count * 10.f);
 	wave->SetZombieCount(zombieCount);
 
-	if (zombieCount == 0) {
+	if (zombieCount == 0) 
+	{
 		gameStop = true;
+		upGrade1->SetActive(true);
+		upGrade2->SetActive(true);
+		upGrade3->SetActive(true);
+		upGrade4->SetActive(true);
+		upGrade5->SetActive(true);
+		upGrade6->SetActive(true);
+		back->SetActive(true);
 	}
 
-	if (gameStop && InputMgr::GetKeyDown(sf::Keyboard::Enter)) {
+	if (gameStop && InputMgr::GetKeyDown(sf::Keyboard::Enter)) 
+	{
+		// 업그레이드 화면
 		WaveUpgrade();
 		gameStop = false;
+		upGrade1->SetActive(false);
+		upGrade2->SetActive(false);
+		upGrade3->SetActive(false);
+		upGrade4->SetActive(false);
+		upGrade5->SetActive(false);
+		upGrade6->SetActive(false);
+		back->SetActive(false);
 	}
 	
 	worldView.setCenter(player->GetPosition());
@@ -176,5 +291,9 @@ void SceneGame::WaveUpgrade()
 	gameStop = false;
 }
 
-		 
-				
+void SceneGame::Upgrade()
+{
+
+}
+
+
