@@ -2,7 +2,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Bullet.h"
-
+#include "HpBar.h"
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -55,6 +55,8 @@ void Player::Release()
 
 void Player::Reset()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 0;
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) // 씬 초기화
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
@@ -82,6 +84,10 @@ void Player::Reset()
 	shootTimer = 0.f;
 	shootInterval = 0.1f; 
 
+	hitTimer = 0.f;
+	hitInterval = 0.2f;
+	hitAble = true;
+	isAlive = true;
 	hp = maxHp;
 }
 
@@ -124,6 +130,11 @@ void Player::Update(float dt)
 		shootTimer = 0.f;	
 	}
 	
+	hitTimer += dt;
+	if (hitInterval < hitTimer && !hitAble) {
+		hitTimer = 0;
+		hitAble = true;
+	}
 	
 }
 
@@ -132,6 +143,11 @@ void Player::Draw(sf::RenderWindow& window)
 	window.draw(body);
 	hitBox.Draw(window);
 	
+}
+
+void Player::SettingHpBar(HpBar* hpBar)
+{
+	this->hpbar = hpBar;
 }
 
 void Player::Shoot()
@@ -158,16 +174,21 @@ void Player::Shoot()
 
 void Player::OnDamage(int damage)
 {
+	
 	if (!isAlive)
 	{
 		return;
 	}
-
+	
+	hitAble = false;
 	hp = Utils::Clamp(hp - damage, 0, maxHp); 
+	
 	if (hp <= 0)
 	{
 		hp = 0;
+		
 		isAlive = false; // 플레이어가 죽었음을 표시
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
+	hpbar->SettingHp(hp, maxHp);
 }

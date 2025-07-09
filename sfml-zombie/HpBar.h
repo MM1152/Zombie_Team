@@ -22,5 +22,7 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void SettingHp(int hp , int maxHp);
 };
 

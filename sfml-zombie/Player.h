@@ -5,7 +5,7 @@
 
 class SceneGame;
 class Bullet;
-
+class HpBar;
 
 class Player : public GameObject
 {
@@ -17,7 +17,8 @@ protected:
 	sf::Vector2f look; // 플레이어 시선 방향
 
 	HitBox hitBox; // 재문 추가
-	TileMap* tileMap;
+	HpBar* hpbar;
+
 	int hp = 0;
 	int maxHp = 1000;
 	bool isAlive = true; // 플레이어 생존 여부
@@ -26,6 +27,9 @@ protected:
 	float shootInterval = 0.1f; // 총알 발사 간격
 	float shootTimer = 0.f; // 총알 발사 타이머
 
+	float hitInterval = 0.2f;
+	float hitTimer = 0.f;
+
 	Bullet* bullet;
 	SceneGame* sceneGame = nullptr; // 플레이어가 속한 게임 씬
 
@@ -33,6 +37,7 @@ protected:
 	std::list<Bullet*> bulletPool; // 총알 풀 (재사용을 위한)
 
 public:
+	bool hitAble = false;
 	Player(const std::string& name = "");
 	virtual ~Player() = default;
 
@@ -62,6 +67,7 @@ public:
 		return hitBox;
 	}
 
+	void SettingHpBar(HpBar* hpBar);
 	void Shoot();
 	void OnDamage(int damage);
 };

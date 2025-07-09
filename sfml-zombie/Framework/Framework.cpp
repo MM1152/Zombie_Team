@@ -49,7 +49,7 @@ void Framework::Do()
 
 
         SCENE_MGR.Update(deltaTime);
-        ZOMBIE_MGR.Update(deltaTime);
+
         // Draw
         window.clear();
         SCENE_MGR.Draw(window);

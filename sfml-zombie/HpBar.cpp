@@ -53,6 +53,10 @@ void HpBar::Release()
 
 void HpBar::Reset()
 {
+	initSize = { 400 , 80 };
+	sortingLayer = SortingLayers::UI;
+	sortingOrder = 0;
+	SetOrigin(Origins::ML);
 	rect.setFillColor(sf::Color::Red);
 	rect.setSize(initSize);
 
@@ -67,4 +71,9 @@ void HpBar::Update(float dt)
 void HpBar::Draw(sf::RenderWindow& window)
 {
 	window.draw(rect);
+}
+
+void HpBar::SettingHp(int hp, int maxHp)
+{
+	rect.setSize({ initSize.x * (hp / (float)maxHp) , initSize.y });
 }

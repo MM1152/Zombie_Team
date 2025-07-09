@@ -50,6 +50,8 @@ void Zombie::Release()
 
 void Zombie::Reset()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 0;
 	SetType((Types)Utils::RandomRange(0, (int)Types::TypeCount));
 	body.setTexture(TEXTURE_MGR.Get(texId) , true);
 	
@@ -78,21 +80,21 @@ void Zombie::SetType(Types type)
 	if (type == Types::Bloater) {
 		maxHp = 500;
 		hp = maxHp;
-
-		speed = 50;
+		damage = 50;
+		speed = 30;
 		texId = "graphics/bloater.png";
 	}
 	else if (type == Types::Chaser) {
 		maxHp = 200;
 		hp = maxHp;
-
-		speed = 75;
+		damage = 30;
+		speed = 50;
 		texId = "graphics/chaser.png";
 	}
 	else if (type == Types::Crawler) {
-		maxHp = 100;
+		maxHp = 60;
 		hp = maxHp;
-
+		damage = 10;
 		speed = 100;
 		texId = "graphics/crawler.png";
 	}
