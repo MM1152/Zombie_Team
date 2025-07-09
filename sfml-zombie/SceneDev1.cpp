@@ -23,7 +23,6 @@ SceneDev1::~SceneDev1()
 
 void SceneDev1::Init()
 {
-	ZOMBIE_MGR.SettingScene(this);
 	worldView.setCenter(0.f, 0.f);
 	worldView.setSize({FRAMEWORK.GetWindowSizeF().x, FRAMEWORK.GetWindowSizeF().y });
 
@@ -58,10 +57,6 @@ void SceneDev1::Enter()
 
 void SceneDev1::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
-		ZOMBIE_MGR.SpawnZombie(1);
-		textBullet->SetBulletCount(10 , 20);
-	}
 
 	int count = ZOMBIE_MGR.GetDieZombieCount();
 	textScore->SetScore(count * 10.f);

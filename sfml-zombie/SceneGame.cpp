@@ -8,6 +8,10 @@
 #include "TextBullet.h"
 #include "TileMap.h"
 #include "Button.h" 
+#include "Wave.h"
+#include "Item.h"
+#include "HealItem.h"
+#include "SpriteGo.h"
 SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
 }
@@ -15,45 +19,101 @@ SceneGame::SceneGame(): Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
-	ZOMBIE_MGR.SettingScene(this);
+	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï¸ï¿½ ï¿½È³ï¿½ï¿½ï¿½ï¿½ï¿½
+	
 
-	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ¾ê³× Ãß°¡ÇÏ¸é ¾È³³ÀÛÇÔ
+	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ì–˜ë„¤ ì¶”ê°€í•˜ë©´ ì•ˆë‚©ìž‘í•¨
 	worldView.setCenter({ 0.f , 0.f });
 
 	uiView.setSize({ FRAMEWORK.GetWindowSizeF().x, FRAMEWORK.GetWindowSizeF().y });
 	uiView.setCenter({ FRAMEWORK.GetWindowSizeF().x / 2, FRAMEWORK.GetWindowSizeF().y / 2 });
 
 	fontIds.push_back("fonts/DS-DIGIT.ttf");
+
 	texIds.push_back("graphics/bloater.png");
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crawler.png");
 	texIds.push_back("graphics/blood.png");
 	texIds.push_back("graphics/ammo_icon.png");
+	texIds.push_back("graphics/crosshair.png");
+
 	fontIds.push_back("fonts/zombiecontrol.ttf");
+
 
 	texIds.push_back("graphics/player.png");
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/background_sheet.png");
+	texIds.push_back("graphics/health_pickup.png");
+
+
+	cursor = new SpriteGo("graphics/crosshair.png");
 	textScore = new TextScore();
 	hpbar = new HpBar();
 	textBullet = new TextBullet();
+	wave = new Wave();
+	tileMap = new TileMap("TileMap");
+	player = new Player("Player");
 
 
 	AddGameObject(textBullet);
 	AddGameObject(hpbar);
 	AddGameObject(textScore);
 	player = (Player*)AddGameObject(new Player("Player"));
-	button = (Button*)AddGameObject(new Button("fonts/zombiecontrol.ttf", "Button"));
 	
 	AddGameObject(new TileMap("TileMap"));
+	AddGameObject(player);
+	AddGameObject(tileMap);
+	AddGameObject(wave);
+	AddGameObject(cursor);
+
+	healItem = new HealItem("HealItem");
+	AddGameObject(healItem);
+
+
+	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
+	player->SettingHpBar(hpbar);
+
+
+
+	player->SetTextBullet(textBullet); // í”Œë ˆì´ì–´ì— ì—°ê²°í•´ì•¼ SetBulletCount(int curCount, int maxCount) ê°€ ì—…ë°ì´íŠ¸ë¨
+
+
+
 	Scene::Init();
 }
 
 
 void SceneGame::Enter()
 {
-	Scene::Enter(); // Ç×»ó ºÎ¸ðÀÇ Å¬·¡½º enter¸¦ È£ÃâÇØ¾ß ÇÕ´Ï´Ù.
+	
+	ZOMBIE_MGR.Enter();
+	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
+
+	
+
+	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2});
+
+	waveValue = 1;
+	cellCount = { 10 , 10 };
+
+	
+
+	zombieCount = waveValue * 5;
+	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
+
+	gameStop = false;
+
+
+	Scene::Enter(); // ï¿½×»ï¿½ ï¿½Î¸ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ enterï¿½ï¿½ È£ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Õ´Ï´ï¿½.
+
+	
+
+	tileMap->Set((sf::Vector2i)cellCount, { 50, 50 });
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+	wave->SetPosition({ FRAMEWORK.GetWindowSizeF().x - 500.f, FRAMEWORK.GetWindowSizeF().y - 200.f });
+	Scene::Enter(); // í•­ìƒ ë¶€ëª¨ì˜ í´ëž˜ìŠ¤ enterë¥¼ í˜¸ì¶œí•´ì•¼ í•©ë‹ˆë‹¤.
 }
 
 
@@ -67,23 +127,53 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
-	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
-		ZOMBIE_MGR.SpawnZombie(1);
-		textBullet->SetBulletCount(10, 20);
-	}
+	ZOMBIE_MGR.Update(dt);
 	
 	int count = ZOMBIE_MGR.GetDieZombieCount();
+	zombieCount -= count;
 	textScore->SetScore(count * 10.f);
+	wave->SetZombieCount(zombieCount);
+
+	if (zombieCount == 0) {
+		gameStop = true;
+	}
+
+	if (gameStop && InputMgr::GetKeyDown(sf::Keyboard::Enter)) {
+		WaveUpgrade();
+		gameStop = false;
+	}
+	
 	worldView.setCenter(player->GetPosition());
+	
+	cursor->SetPosition((sf::Vector2f)ScreenToWorld(InputMgr::GetMousePosition()));
 	Scene::Update(dt);
 }
-
-
-
 
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
 }
+
+void SceneGame::WaveUpgrade()
+{
+	waveValue++;
+	cellCount = cellCount *  1.3f,
+	tileMap->Set((sf::Vector2i)cellCount , { 50, 50 });
+	tileMap->Reset();
+
+	zombieCount = waveValue * 5;
+	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
+
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+
+	gameStop = false;
+}
+
+
+//void SceneGame::Draw(sf::RenderWindow& window)
+//{
+//	Scene::Draw(window);
+//}
 					 
 				

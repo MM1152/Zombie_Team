@@ -3,6 +3,8 @@
 #include "Zombie.h"
 #include "Blood.h"
 #include "TextGo.h"
+#include "Player.h"
+
 void ZombieMgr::SpawnBlood(const sf::Transformable& trans)
 {
 	Blood* blood;
@@ -42,14 +44,24 @@ void ZombieMgr::Update(float dt)
 	
 	for (Zombie* zombie : zombieList) {
 		zombie->Update(dt);
-		std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
+
+		if (Utils::CheckCollision(zombie->GetHitBox().rect , player->GetHitBox().rect) && player->hitAble) {
+			player->OnDamage(zombie->GetDamage());
+		}
+
+		//std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
 	}
 	
-	if (InputMgr::GetKeyDown(sf::Keyboard::D)) {
+	if (InputMgr::GetKeyDown(sf::Keyboard::F)) {
 		for (Zombie* zombie : zombieList) {
 			zombie->OnDamage(1000000);
 		}
 	}
+	//if (InputMgr::GetKeyDown(sf::Keyboard::D)) {
+	//	for (Zombie* zombie : zombieList) {
+	//		zombie->OnDamage(1000000);
+	//	}
+	//}
 }
 
 void ZombieMgr::Release()
@@ -59,10 +71,13 @@ void ZombieMgr::Release()
 
 void ZombieMgr::Enter()
 {
-	
+	for (auto i : zombieList) {
+		zombiePool.push_back(i);
+	}
+	zombieList.clear();
 }
 
-void ZombieMgr::SpawnZombie(int count)
+void ZombieMgr::SpawnZombie(int count , float radious)
  {
 	for (int i = 0; i < count; i++) {
 		Zombie* zombie;
@@ -77,9 +92,9 @@ void ZombieMgr::SpawnZombie(int count)
 			zombiePool.pop_front();
 		}
 		zombieList.push_back(zombie);
-		zombie->Reset();
+ 		zombie->Reset();
 		zombie->SetActive(true);
-		zombie->SetPosition(Utils::RandomOnUnitCircle() * 300.f);
+		zombie->SetPosition(Utils::RandomOnUnitCircle() * radious);
 	}
 }
 

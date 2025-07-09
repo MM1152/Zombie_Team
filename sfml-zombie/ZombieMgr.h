@@ -5,6 +5,7 @@ class Zombie;
 class Blood;
 class TextGo;
 class Player;
+
 class ZombieMgr : public Singleton<ZombieMgr>
 {
 	friend Singleton<ZombieMgr>;
@@ -17,8 +18,8 @@ protected:
 	
 	std::list<Blood*> bloodList;
 	std::list<Blood*> bloodPool;
-	Scene* scene;
-	Player* player;
+	Scene* scene = nullptr;
+	Player* player = nullptr;
 	int dieZombie = 0;
 
 	void SpawnBlood(const sf::Transformable& trans);
@@ -30,9 +31,13 @@ public:
 	void Enter();
 
 	int GetDieZombieCount() const { return dieZombie; };
-	void SpawnZombie(int count);
+	void SpawnZombie(int count , float radious);
 	void SettingScene(Scene* scene);
 	void SettingPlayer(Player* player);
+	std::list<Zombie*>& GetZombieList() { return zombieList; };
+	
+
+
 };
 
 #define ZOMBIE_MGR ZombieMgr::Instance()

@@ -1,38 +1,60 @@
 #pragma once
 #include "GameObject.h"
+#include "TextBullet.h"
 #include "HitBox.h"
 #include "TileMap.h"
 
 class SceneGame;
 class Bullet;
+class HpBar;
+class TextBullet;
 
 
 class Player : public GameObject
 {
 protected:
-	sf::Sprite body; // 플레이어 스프라이트
-	std::string texId = "graphics/player.png"; // 플레이어 텍스처 ID
+	sf::Sprite body; 
+	std::string texId = "graphics/player.png"; 
 
-	sf::Vector2f direction; // 플레이어 이동 방향
-	sf::Vector2f look; // 플레이어 시선 방향
+	sf::Vector2f direction; 
+	sf::Vector2f look; 
 
-	HitBox hitBox; // 재문 추가
+	
+	HpBar* hpbar;
+
+	HitBox hitBox; 
 	TileMap* tileMap;
 	int hp = 0;
 	int maxHp = 1000;
-	bool isAlive = true; // 플레이어 생존 여부
+	bool isAlive = true; 
 
 	float speed = 200.f;
-	float shootInterval = 0.1f; // 총알 발사 간격
-	float shootTimer = 0.f; // 총알 발사 타이머
+	
+
+
+	float hitInterval = 0.2f;
+	float hitTimer = 0.f;
+	float shootInterval = 0.1f; 
+	float shootTimer = 0.f; 
 
 	Bullet* bullet;
-	SceneGame* sceneGame = nullptr; // 플레이어가 속한 게임 씬
+	SceneGame* sceneGame = nullptr; 
 
-	std::list<Bullet*> bulletList; // 총알 리스트
-	std::list<Bullet*> bulletPool; // 총알 풀 (재사용을 위한)
+
+	std::list<Bullet*> bulletList; 
+	std::list<Bullet*> bulletPool; 
+
+
+	TextBullet* textBullet; 
+
+	int curBullet = 0;
+	int maxBullet = 20;
+	float reloadTime = 1.5f; 
+	bool isReloading = false; 
+	float reloadTimer = 0.f; 
 
 public:
+	bool hitAble = false;
 	Player(const std::string& name = "");
 	virtual ~Player() = default;
 
@@ -48,11 +70,6 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	sf::FloatRect GetGlobalBounds() const override
-	{
-		return body.getGlobalBounds();
-	}
-
 	sf::FloatRect GetLocalBounds() const override
 	{
 		return body.getLocalBounds();
@@ -62,7 +79,17 @@ public:
 		return hitBox;
 	}
 
+	void SettingHpBar(HpBar* hpBar);
 	void Shoot();
 	void OnDamage(int damage);
+	void SetTextBullet(TextBullet* textBullet);
+
+
+	void GetCurrentHp(int& Hp, int& maxHp) const
+	{
+		Hp = hp;
+		maxHp = this->maxHp;
+	}
+
 };
 

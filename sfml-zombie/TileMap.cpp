@@ -64,7 +64,7 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 			}
 		}
 	}
-		
+	
 }
 
 void TileMap::UpdateTransform() // 가장 마지막에 구현
@@ -74,6 +74,7 @@ void TileMap::UpdateTransform() // 가장 마지막에 구현
 	transform.rotate(rotation);
 	transform.scale(scale);
 	transform.translate(-origin);
+
 }
 
 void TileMap::Init()
@@ -81,9 +82,6 @@ void TileMap::Init()
 	// 레이어 젤 뒤에 설정
 	sortingLayer = SortingLayers::Background;
 	sortingOrder = 0;
-
-	
-	Set({ 50, 50 }, { 50.f, 50.f });
 }
 
 void TileMap::Release()
@@ -92,6 +90,8 @@ void TileMap::Release()
 
 void TileMap::Reset()
 {
+	sortingLayer = SortingLayers::Background;
+	sortingOrder = 0;
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
 	texture = &TEXTURE_MGR.Get(spriteSheetId);
 	SetOrigin(Origins::MC);
@@ -112,6 +112,7 @@ void TileMap::Update(float dt)
 	pos.y = Utils::Clamp(pos.y, 50 - GetOrigin().y, cellSize.y * cellCount.y - GetOrigin().y - 50);
 
 	player->SetPosition(pos);
+
 
 }
 

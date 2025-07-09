@@ -148,9 +148,12 @@
     <ClCompile Include="Framework\InputMgr.cpp" />
     <ClCompile Include="Framework\SpriteGo.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
+    <ClCompile Include="HealItem.cpp" />
     <ClCompile Include="HpBar.cpp" />
     <ClCompile Include="HitBox.cpp" />
-    <ClCompile Include="HealItem.cpp" />
+    <ClCompile Include="Item.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="SceneDev1.cpp" />
@@ -167,6 +170,7 @@
     <ClCompile Include="TextScore.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Variables.cpp" />
+    <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieMgr.cpp" />
   </ItemGroup>
@@ -182,12 +186,15 @@
     <ClInclude Include="Framework\Singleton.h" />
     <ClInclude Include="Framework\SpriteGo.h" />
     <ClInclude Include="Framework\Scene.h" />
+    <ClInclude Include="HealItem.h" />
     <ClInclude Include="HpBar.h" />
     <ClInclude Include="HitBox.h" />
+    <ClInclude Include="Item.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="SceneDev1.h" />
     <ClInclude Include="SceneDev2.h" />
     <ClInclude Include="SceneTitle.h" />
-    <ClInclude Include="HealItem.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="SceneGame.h" />
@@ -198,6 +205,7 @@
     <ClInclude Include="TextScore.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Variables.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="Zombie.h" />
     <ClInclude Include="ZombieMgr.h" />
   </ItemGroup>

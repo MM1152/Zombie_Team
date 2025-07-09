@@ -50,6 +50,8 @@ void Zombie::Release()
 
 void Zombie::Reset()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 0;
 	SetType((Types)Utils::RandomRange(0, (int)Types::TypeCount));
 	body.setTexture(TEXTURE_MGR.Get(texId) , true);
 	
@@ -63,11 +65,14 @@ void Zombie::Update(float dt)
 	Utils::Normalize(dir);
 	SetPosition(GetPosition() + dir * speed * dt);
 	SetRotation(Utils::Angle(dir));
+
+	hitBox.UpdateTransform(body, { GetLocalBounds().left + 10.f , GetLocalBounds().top + -10.f  , GetLocalBounds().width - 10.f, GetLocalBounds().height - 10.f }); // 히트박스 크기조절
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
 }
 
 void Zombie::SetType(Types type)
@@ -75,22 +80,22 @@ void Zombie::SetType(Types type)
 	if (type == Types::Bloater) {
 		maxHp = 500;
 		hp = maxHp;
-
-		speed = 75;
+		damage = 50;
+		speed = 30;
 		texId = "graphics/bloater.png";
 	}
 	else if (type == Types::Chaser) {
 		maxHp = 200;
 		hp = maxHp;
-
-		speed = 120;
+		damage = 30;
+		speed = 50;
 		texId = "graphics/chaser.png";
 	}
 	else if (type == Types::Crawler) {
-		maxHp = 100;
+		maxHp = 60;
 		hp = maxHp;
-
-		speed = 150;
+		damage = 10;
+		speed = 65;
 		texId = "graphics/crawler.png";
 	}
 
