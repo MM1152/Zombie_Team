@@ -15,6 +15,7 @@
 // FRAMEWORK
 #include "Defines.h"
 #include "Variables.h"
+#include "SoundMgr.h"
 #include "Utils.h"
 #include "Singleton.h"
 #include "ResourceMgr.h"

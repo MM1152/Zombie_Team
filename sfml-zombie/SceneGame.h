@@ -13,6 +13,8 @@ class Wave;
 class TileMap;
 class HealItem;
 class SpriteGo;
+class AmmoItem;
+
 class SceneGame : public Scene
 {
 protected:
@@ -25,6 +27,9 @@ protected:
 	TileMap* tileMap;
 	HealItem* healItem;
 	SpriteGo* cursor;
+	AmmoItem* Ammoitem;
+
+	float timer = 0.f;
 
 	int waveValue;
 	int zombieCount;

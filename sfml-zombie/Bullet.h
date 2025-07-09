@@ -2,9 +2,6 @@
 #include "GameObject.h"
 #include "HitBox.h"
 
-
-
-
 class Zombie; 
 class SceneGame;
 class Bullet : public GameObject

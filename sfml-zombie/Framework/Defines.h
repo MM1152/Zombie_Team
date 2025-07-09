@@ -35,3 +35,14 @@ enum class Sides
 	Up,
 	Down,
 };
+
+enum class Audio
+{
+	HIT,
+	PICKUP,
+	POWERUP,
+	RELOAD,
+	RELOAD_FAILED,
+	SHOOT,
+	SPLAT,
+};

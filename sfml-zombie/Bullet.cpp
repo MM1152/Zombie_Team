@@ -43,15 +43,11 @@ void Bullet::SetOrigin(Origins preset)
 }
 
 
-
-
 void Bullet::Init()
 {
 	sortingLayer = SortingLayers::Foreground; // 솔팅 레이어 설정
 	sortingOrder = 1;
 }
-
-
 
 
 void Bullet::Release()
@@ -68,7 +64,7 @@ void Bullet::Reset()
 
 	direction = { 0.f,0.f };
 	speed = 0.f;
-	damage = 30;
+	damage = 100;
 }
 
 void Bullet::Update(float dt)
@@ -105,6 +101,7 @@ void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float spd, i
 	speed = spd;
 	damage = dmg;
 
+	SOUND_MGR.Play(Audio::SHOOT);
 	SetRotation(Utils::Angle(direction)); // 방향에 따라 회전 설정 
 }
 

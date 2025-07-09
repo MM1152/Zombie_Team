@@ -36,6 +36,7 @@ void ZombieMgr::Update(float dt)
 			zombiePool.push_back(*iter);
 			iter = zombieList.erase(iter);
 			dieZombie++;
+			SOUND_MGR.Play(Audio::SPLAT);
 		}
 		else {
 			iter++;
@@ -47,6 +48,7 @@ void ZombieMgr::Update(float dt)
 
 		if (Utils::CheckCollision(zombie->GetHitBox().rect , player->GetHitBox().rect) && player->hitAble) {
 			player->OnDamage(zombie->GetDamage());
+			SOUND_MGR.Play(Audio::HIT);
 		}
 
 		//std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
