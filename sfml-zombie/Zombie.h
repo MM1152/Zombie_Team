@@ -59,6 +59,6 @@ public:
 		return body.getGlobalBounds();
 	}
 
-	const HitBox& GetHitBox() const { return hitBox; };
+
 };
 

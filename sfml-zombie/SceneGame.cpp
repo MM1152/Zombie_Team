@@ -164,7 +164,7 @@ void SceneGame::WaveUpgrade()
 	gameStop = false;
 
 	
-}
+
 	ZOMBIE_MGR.SpawnZombie(zombieCount, cellCount.x * 50.f / 2.5f);
 }
 

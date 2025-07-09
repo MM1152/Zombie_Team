@@ -19,7 +19,7 @@ protected:
 	sf::Vector2f direction; 
 	sf::Vector2f look; 
 
-	HitBox hitBox; // �繮 �߰�
+	
 	HpBar* hpbar;
 
 	HitBox hitBox; 
@@ -29,8 +29,8 @@ protected:
 	bool isAlive = true; 
 
 	float speed = 200.f;
-	float shootInterval = 0.1f; // �Ѿ� �߻� ����
-	float shootTimer = 0.f; // �Ѿ� �߻� Ÿ�̸�
+	
+
 
 	float hitInterval = 0.2f;
 	float hitTimer = 0.f;

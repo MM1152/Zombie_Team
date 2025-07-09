@@ -139,6 +139,7 @@ void Player::Update(float dt)
 	{
 		Shoot();
 		shootTimer = 0.f;	
+		curBullet--;
 	}
 	
 	hitTimer += dt;
@@ -147,23 +148,19 @@ void Player::Update(float dt)
 		hitAble = true;
 	}
 	
-		curBullet--; 
-		shootTimer = 0.f; // ���� Ÿ�̸� �ʱ�ȭ
 
-		if (textBullet)
-		{
-			textBullet->SetBulletCount(curBullet, maxBullet);
-		}
+	if (textBullet)
+	{
+		textBullet->SetBulletCount(curBullet, maxBullet);
 	}
 
-
-	if (isReloading) // ������ ���̸�
+	if (isReloading) 
 	{
-		reloadTimer += dt; // ������ Ÿ�̸� ������Ʈ
-		if (reloadTimer >= reloadTime) // ������ �ð��� �� �Ǹ�
+		reloadTimer += dt; 
+		if (reloadTimer >= reloadTime) 
 		{
 			curBullet = maxBullet ;
-			isReloading = false; // ������ ���� ����
+			isReloading = false; 
 			reloadTimer = 0.f; // ������ Ÿ�̸� �ʱ�ȭ
 
 			if (textBullet)
@@ -173,13 +170,10 @@ void Player::Update(float dt)
 		}
 	}
 
-	if (InputMgr::GetKeyDown(sf::Keyboard::R))
+	if (InputMgr::GetKeyDown(sf::Keyboard::R) && !isReloading)
 	{
-		if (curBullet < maxBullet)
-		{
-			isReloading = true; // ������ ���·� ����
-			reloadTimer = 0.f; // ������ Ÿ�̸� �ʱ�ȭ
-		}
+		isReloading = true; // ������ ���·� ����
+		reloadTimer = 0.f; // ������ Ÿ�̸� �ʱ�ȭ
 	}	
 
 
