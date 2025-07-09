@@ -108,8 +108,8 @@ void TileMap::Update(float dt)
 {
 	sf::Vector2f pos = player->GetPosition();
 	//std::cout << GetOrigin().x << std::endl;
-	pos.x = Utils::Clamp(pos.x, 50 - GetOrigin().x, cellSize.x * cellCount.x - GetOrigin().x);
-	pos.y = Utils::Clamp(pos.y, 50 - GetOrigin().y, cellSize.y * cellCount.y - GetOrigin().y);
+	pos.x = Utils::Clamp(pos.x, 50 - GetOrigin().x, cellSize.x * cellCount.x - GetOrigin().x - 50);
+	pos.y = Utils::Clamp(pos.y, 50 - GetOrigin().y, cellSize.y * cellCount.y - GetOrigin().y - 50);
 
 	player->SetPosition(pos);
 
