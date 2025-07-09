@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "TileMap.h"
 
 class TextGo;
 class Zombie;
@@ -13,10 +14,11 @@ protected:
 	TextScore* textScore;
 	HpBar* hpbar;
 	TextBullet* textBullet;
+
 public:
 	SceneDev1();
 	~SceneDev1() override;
-
+	
 	void Init() override;
 	void Enter() override;
 	void Update(float dt) override;

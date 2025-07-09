@@ -9,6 +9,7 @@
 #include "TextScore.h"
 #include "HpBar.h"
 #include "TextBullet.h"
+#include "TileMap.h"
 
 SceneDev1::SceneDev1() : Scene(SceneIds::Dev1)
 {
@@ -28,6 +29,7 @@ void SceneDev1::Init()
 	uiView.setSize({ FRAMEWORK.GetWindowSizeF().x, FRAMEWORK.GetWindowSizeF().y });
 	uiView.setCenter({ FRAMEWORK.GetWindowSizeF().x / 2, FRAMEWORK.GetWindowSizeF().y / 2 });
 
+	fontIds.push_back("fonts/DS-DIGIT.ttf");
 	texIds.push_back("graphics/bloater.png");
 	texIds.push_back("graphics/chaser.png");
 	texIds.push_back("graphics/crawler.png");
@@ -64,7 +66,6 @@ void SceneDev1::Update(float dt)
 	int count = ZOMBIE_MGR.GetDieZombieCount();
 	textScore->SetScore(count * 10.f);
 	Scene::Update(dt);
-	
 }
 
 void SceneDev1::Draw(sf::RenderWindow& window)
