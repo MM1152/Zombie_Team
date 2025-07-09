@@ -2,9 +2,12 @@
 #include "GameObject.h"
 #include "HitBox.h"
 
+class Player;
+
 class TileMap : public GameObject
 {
 protected:
+
 	sf::VertexArray va;
 	std::string spriteSheetId = "graphics/background_sheet.png";
 	sf::Texture* texture = nullptr;
@@ -16,7 +19,7 @@ protected:
 	std::vector<HitBox> hitBoxes;
 
 	HitBox hitBox;
-
+	Player* player = nullptr;
 	bool isCollision = false;
 
 public:

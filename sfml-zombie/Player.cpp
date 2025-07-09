@@ -42,8 +42,6 @@ void Player::SetOrigin(Origins preset)
 	}
 }
 
-
-
 void Player::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
@@ -73,7 +71,6 @@ void Player::Reset()
 	}
 	bulletList.clear();
 
-
 	body.setTexture(TEXTURE_MGR.Get(texId), true); // 텍스처 재설정
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f, 0.f });
@@ -86,12 +83,7 @@ void Player::Reset()
 	shootInterval = 0.1f; 
 
 	hp = maxHp;
-
-
 }
-
-
-
 
 void Player::Update(float dt)
 {
@@ -103,7 +95,6 @@ void Player::Update(float dt)
 		Utils::Normalize(direction); // 방향 벡터를 정규화
 	}
 	SetPosition(position + direction * speed * dt); // 플레이어 위치 업데이트
-
 
 	auto it = bulletList.begin(); // 총알 리스트를 순회하는 반복자, 불릿리스트에서 총알 하나씩 꺼내서 비활성화 되어 있으면 Pool에 집어넣고 리스트에서 삭제, 활성화 되어있으면 넘어감
 	while (it != bulletList.end()) // 비활성화된 오브젝트를 없애는 대신 재활용하기 위해 따로 모아두는 것.
@@ -119,27 +110,29 @@ void Player::Update(float dt)
 		}
 	}
 
-
 	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // 마우스 위치 가져오기
 	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // 월드 좌표로 변환
 	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // 플레이어가 바라보는 방향 계산
 	SetRotation(Utils::Angle(look)); // 플레이어 회전 설정
 	
+	hitBox.UpdateTransform(body, GetLocalBounds());
+
 	shootTimer += dt; // 슈팅 타이머 업데이트
 	if(InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer>shootInterval)
 	{
 		Shoot();
 		shootTimer = 0.f;	
 	}
-
+	
+	
 }
-
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
+	hitBox.Draw(window);
+	
 }
-
 
 void Player::Shoot()
 {
