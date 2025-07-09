@@ -7,6 +7,7 @@
 #include "HpBar.h"
 #include "TextBullet.h"
 #include "TileMap.h"
+#include "Button.h" 
 SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
 }
@@ -42,6 +43,8 @@ void SceneGame::Init()
 	AddGameObject(hpbar);
 	AddGameObject(textScore);
 	player = (Player*)AddGameObject(new Player("Player"));
+	button = (Button*)AddGameObject(new Button("fonts/zombiecontrol.ttf", "Button"));
+	
 	AddGameObject(new TileMap("TileMap"));
 	ZOMBIE_MGR.SettingPlayer(player);
 	Scene::Init();

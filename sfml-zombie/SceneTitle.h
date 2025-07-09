@@ -1,12 +1,12 @@
 #pragma once
 #include "Scene.h"
 #include "TextGo.h"
+#include "Button.h"
 class SceneTitle : public Scene
 {
 protected:
-	TextGo* title;
-	TextGo* start;
-	TextGo* exit;
+	Button* text;
+	Button* text2;
 	
 	sf::Vector2f windowSize;
 public:

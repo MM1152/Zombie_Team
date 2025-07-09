@@ -1,46 +1,126 @@
 #include "stdafx.h"
 #include "Button.h"
+#include "HitBox.h"
 
-Button::Button(const std::string& fontId, const std::string& name) : TextGo(fontId ,name)
+
+Button::Button(const std::string& fontId, const std::string& name) : TextGo("fonts/zombiecontrol.ttf" ,name)
 {
+
+}
+void Button::setText(std::string text)
+{
+	SetString(text);
+}
+void Button::setCharacterSize(sf::RectangleShape rect)
+{
+	int size = (rect.getSize().x * 0.5);
+	SetCharacterSize(size);
+}
+void Button::setTextFillColor(sf::Color color)
+{
+	SetFillColor(color);
+}
+void Button::setTextPosition(sf::RectangleShape rect)
+{
+	SetPosition(rect.getPosition());
+	
+}
+void Button::setTextOrigin(Origins origin)
+{
+	SetOrigin(origin);
 }
 
-void Button::SetPosition(const sf::Vector2f& pos)
+void Button::setShapeSize(sf::Vector2f size)
 {
+	shape.setSize(size);
 }
 
-void Button::SetRotation(float rot)
+void Button::setShapeFillColor(sf::Color color)
 {
+	shape.setFillColor(color);
 }
 
-void Button::SetScale(const sf::Vector2f& s)
+void Button::setShapePosition(sf::Vector2f pos)
 {
+	shape.setPosition(pos);
+	
 }
 
-void Button::SetOrigin(const sf::Vector2f& o)
+void Button::setShapeOrigin()
 {
-}
-
-void Button::SetOrigin(Origins preset)
-{
+	shape.setOrigin(shape.getSize() * 0.5f);
 }
 
 void Button::Init()
 {
-}
+	TextGo::Init();
 
+}
 void Button::Release()
 {
 }
 
 void Button::Reset()
 {
+	TextGo::Reset();
+	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
+	
+	mouse.setFillColor(sf::Color::Transparent);
+	mouse.setOutlineColor(sf::Color::Transparent);
+	mouse.setOutlineThickness(0.5f);
+	mouse.setSize({ 50.f,50.f });
+	mouse.setOrigin(mouse.getSize() * 0.5f);
+
+	shapeHitBox.UpdateTransform(shape, shape.getLocalBounds());
+	textHitBox.UpdateTransform(text, text.getGlobalBounds());
+	color = shape.getFillColor();
 }
 
 void Button::Update(float dt)
 {
+	sf::Vector2i pixelPos = sf::Mouse::getPosition(FRAMEWORK.GetWindow());
+	sf::Vector2f worldPos = FRAMEWORK.GetWindow().mapPixelToCoords(pixelPos);
+	mouse.setPosition(worldPos);
+	mouseHitBox.UpdateTransform(mouse, mouse.getLocalBounds());
+	
+
+	if (Utils::CheckCollision(mouseHitBox.rect, textHitBox.rect))
+	{
+		
+		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+		{
+			isPressed = true;
+		}
+	}
+	else
+	{
+		
+		isPressed = false;
+	}
+
+	if (Utils::CheckCollision(mouseHitBox.rect, shapeHitBox.rect))
+	{
+		shape.setFillColor(sf::Color::Red);
+		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
+		{
+			isPressed = true;
+		}
+	}
+	else
+	{
+		shape.setFillColor(color);
+		isPressed = false;
+	}
+	
 }
 
 void Button::Draw(sf::RenderWindow& window)
 {
+	window.draw(shape);
+	window.draw(mouse);
+
+	shapeHitBox.Draw(window);
+	textHitBox.Draw(window);
+	mouseHitBox.Draw(window);
+	TextGo::Draw(window);
 }

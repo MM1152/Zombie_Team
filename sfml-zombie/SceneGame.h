@@ -3,6 +3,7 @@
 
 
 class Player;
+class Button;
 class TextGo;
 class Zombie;
 class TextScore;
@@ -13,6 +14,7 @@ class SceneGame : public Scene
 {
 protected:
 	Player* player = nullptr;
+	Button* button = nullptr;
 	Zombie* zombie;
 	TextScore* textScore;
 	HpBar* hpbar;

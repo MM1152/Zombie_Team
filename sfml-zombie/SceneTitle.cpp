@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "SceneTitle.h"
 #include "SpriteGo.h"
+#include "Button.h"
+
 SceneTitle::SceneTitle()
 	: Scene(SceneIds::Title)
 {
@@ -13,24 +15,34 @@ void SceneTitle::ChangeScene()
 void SceneTitle::Enter()
 {
 	AddGameObject(new SpriteGo("graphics/background.png"));
-	start = (TextGo*)(AddGameObject(new TextGo("fonts/zombiecontrol.ttf")));
-	exit = (TextGo*)(AddGameObject(new TextGo("fonts/zombiecontrol.ttf")));
+	text = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	text2 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
+	//exit = (TextGo*)(AddGameObject(new TextGo("fonts/zombiecontrol.ttf")));
 	
 	sf::FloatRect bounds = FRAMEWORK.GetWindowBounds();
-	sf::Vector2f startPos = { bounds.width * 0.5f,bounds.height * 0.5f };
-	sf::Vector2f exitPos = { bounds.width * 0.5f,bounds.height * 0.7f };
+	text->setShapeSize({ 200.f,200.f });
+	text->setShapeFillColor(sf::Color::Blue);
+	text->setShapePosition({ bounds.width * 0.8f, bounds.height * 0.8f });
+	text->setShapeOrigin();
+	
+	text->setText("Start");
+	text->setCharacterSize(text->GetShape());
+	text->setTextFillColor(sf::Color::Black);
+	text->setTextPosition(text->GetShape());
+	text->setTextOrigin(Origins::MC);
+	//AddGameObject(text);
 
-	start->SetString("Start");
-	start->SetCharacterSize(150);
-	start->SetFillColor(sf::Color::White);
-	start->SetOrigin(Origins::MC);
-	start->SetPosition(startPos);
-
-	exit->SetString("Exit");
-	exit->SetCharacterSize(150);
-	exit->SetFillColor(sf::Color::White);
-	exit->SetOrigin(Origins::MC);
-	exit->SetPosition(exitPos);
+	text2->setShapeSize({ 200.f,200.f });
+	text2->setShapeFillColor(sf::Color::Blue);
+	text2->setShapePosition({ bounds.width * 0.2f, bounds.height * 0.8f });
+	text2->setShapeOrigin();
+	
+	text2->setText("Exit");
+	text2->setCharacterSize(text2->GetShape());
+	text2->setTextFillColor(sf::Color::Black);
+	text2->setTextPosition(text2->GetShape());
+	text2->setTextOrigin(Origins::MC);
+	//AddGameObject(text2);
 
 	windowSize = FRAMEWORK.GetWindowSizeF();
 	worldView.setSize(windowSize);
@@ -51,9 +63,13 @@ void SceneTitle::Init()
 
 void SceneTitle::Update(float dt)
 {
-	if (InputMgr::GetMouseButton(sf::Mouse::Left))
+	if (text->GetIsPressed())
 	{
 		SCENE_MGR.ChangeScene(SceneIds::Game);
+	}
+	if (text2->GetIsPressed())
+	{
+		FRAMEWORK.GetWindow().close();
 	}
 	Scene::Update(dt);
 }

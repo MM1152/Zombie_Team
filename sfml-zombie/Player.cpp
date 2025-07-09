@@ -115,7 +115,7 @@ void Player::Update(float dt)
 	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // 플레이어가 바라보는 방향 계산
 	SetRotation(Utils::Angle(look)); // 플레이어 회전 설정
 	
-	hitBox.UpdateTransform(body, GetLocalBounds());
+	hitBox.UpdateTransform(body, GetLocalBounds());	
 
 	shootTimer += dt; // 슈팅 타이머 업데이트
 	if(InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer>shootInterval)
