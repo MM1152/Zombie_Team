@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "HpBar.h"
 #include "TextBullet.h"
 
 
@@ -58,6 +59,9 @@ void Player::Release()
 
 void Player::Reset()
 {
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 0;
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) // �� �ʱ�ȭ
 	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) 
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
@@ -85,6 +89,11 @@ void Player::Reset()
 	shootTimer = 0.f;
 	shootInterval = 0.1f; 
 
+	hitTimer = 0.f;
+	hitInterval = 0.2f;
+	hitAble = true;
+	isAlive = true;
+	hp = maxHp;
 	hp = maxHp;		
 
 }
@@ -129,6 +138,15 @@ void Player::Update(float dt)
 	if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval && curBullet > 0)
 	{
 		Shoot();
+		shootTimer = 0.f;	
+	}
+	
+	hitTimer += dt;
+	if (hitInterval < hitTimer && !hitAble) {
+		hitTimer = 0;
+		hitAble = true;
+	}
+	
 		curBullet--; 
 		shootTimer = 0.f; // ���� Ÿ�̸� �ʱ�ȭ
 
@@ -173,6 +191,11 @@ void Player::Draw(sf::RenderWindow& window)
 	hitBox.Draw(window);
 }
 
+void Player::SettingHpBar(HpBar* hpBar)
+{
+	this->hpbar = hpBar;
+}
+
 void Player::Shoot()
 {
 	Bullet* bullet = nullptr;
@@ -198,18 +221,23 @@ void Player::Shoot()
 
 void Player::OnDamage(int damage)
 {
+	
 	if (!isAlive)
 	{
 		return;
 	}
-
+	
+	hitAble = false;
 	hp = Utils::Clamp(hp - damage, 0, maxHp); 
+	
 	if (hp <= 0)
 	{
 		hp = 0;
+		
 		isAlive = false; // �÷��̾ �׾����� ǥ��
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
+	hpbar->SettingHp(hp, maxHp);
 }
 
 void Player::SetTextBullet(TextBullet* textBullet) // TextBullet�� �����ϴ� �Լ�

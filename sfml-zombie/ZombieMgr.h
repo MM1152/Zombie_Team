@@ -5,6 +5,7 @@ class Zombie;
 class Blood;
 class TextGo;
 class Player;
+
 class ZombieMgr : public Singleton<ZombieMgr>
 {
 	friend Singleton<ZombieMgr>;

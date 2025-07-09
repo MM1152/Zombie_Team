@@ -6,6 +6,7 @@
 
 class SceneGame;
 class Bullet;
+class HpBar;
 class TextBullet;
 
 
@@ -18,6 +19,9 @@ protected:
 	sf::Vector2f direction; 
 	sf::Vector2f look; 
 
+	HitBox hitBox; // �繮 �߰�
+	HpBar* hpbar;
+
 	HitBox hitBox; 
 	TileMap* tileMap;
 	int hp = 0;
@@ -25,6 +29,11 @@ protected:
 	bool isAlive = true; 
 
 	float speed = 200.f;
+	float shootInterval = 0.1f; // �Ѿ� �߻� ����
+	float shootTimer = 0.f; // �Ѿ� �߻� Ÿ�̸�
+
+	float hitInterval = 0.2f;
+	float hitTimer = 0.f;
 	float shootInterval = 0.1f; 
 	float shootTimer = 0.f; 
 
@@ -45,6 +54,7 @@ protected:
 	float reloadTimer = 0.f; 
 
 public:
+	bool hitAble = false;
 	Player(const std::string& name = "");
 	virtual ~Player() = default;
 
@@ -69,6 +79,7 @@ public:
 		return hitBox;
 	}
 
+	void SettingHpBar(HpBar* hpBar);
 	void Shoot();
 	void OnDamage(int damage);
 	void SetTextBullet(TextBullet* textBullet);

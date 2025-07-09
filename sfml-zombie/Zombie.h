@@ -10,6 +10,7 @@ protected:
 
 	int maxHp;
 	int hp;
+	int damage;
 
 	float speed;
 	sf::Vector2f targetPos;
@@ -44,6 +45,7 @@ public:
 	void SetType(Types type);
 	void OnDamage(int damage);
 	void SetPlayer(Player* player);
+	int GetDamage() { return damage; };
 	const sf::Sprite& GetSprite() const { return body; };
 	const HitBox& GetHitBox() const { return hitBox; }
 
@@ -57,5 +59,6 @@ public:
 		return body.getGlobalBounds();
 	}
 
+	const HitBox& GetHitBox() const { return hitBox; };
 };
 

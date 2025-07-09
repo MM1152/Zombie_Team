@@ -18,6 +18,7 @@ SceneGame::SceneGame(): Scene(SceneIds::Game)
 
 void SceneGame::Init()
 {
+	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ��� �߰��ϸ� �ȳ�����
 	
 
 	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // 얘네 추가하면 안납작함
@@ -46,11 +47,12 @@ void SceneGame::Init()
 	textBullet = new TextBullet();
 	wave = new Wave();
 	tileMap = new TileMap("TileMap");
+	player = new Player("Player");
 
 	AddGameObject(textBullet);
 	AddGameObject(hpbar);
 	AddGameObject(textScore);
-	player = (Player*)AddGameObject(new Player("Player"));
+	AddGameObject(player);
 	AddGameObject(tileMap);
 	AddGameObject(wave);
 	
@@ -61,6 +63,7 @@ void SceneGame::Init()
 
 	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
+	player->SettingHpBar(hpbar);
 
 
 
@@ -77,7 +80,10 @@ void SceneGame::Init()
 
 void SceneGame::Enter()
 {
+	
 	ZOMBIE_MGR.Enter();
+	
+
 	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2});
 
 	waveValue = 1;
@@ -88,11 +94,14 @@ void SceneGame::Enter()
 	zombieCount = waveValue * 5;
 	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
 
-	wave->SetWaveString(waveValue);
-	wave->SetZombieCount(zombieCount);
-	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x  - 500.f, FRAMEWORK.GetWindowSizeF().y - 200.f});
 	gameStop = false;
 
+
+	Scene::Enter(); // �׻� �θ��� Ŭ���� enter�� ȣ���ؾ� �մϴ�.
+
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+	wave->SetPosition({ FRAMEWORK.GetWindowSizeF().x - 500.f, FRAMEWORK.GetWindowSizeF().y - 200.f });
 	waveValue++;
 	Scene::Enter(); // 항상 부모의 클래스 enter를 호출해야 합니다.
 }
@@ -108,6 +117,7 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
+	ZOMBIE_MGR.Update(dt);
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
 		ZOMBIE_MGR.SpawnZombie(20,1.f);
 		textBullet->SetBulletCount(20, 20);
@@ -117,6 +127,7 @@ void SceneGame::Update(float dt)
 	zombieCount -= count;
 	textScore->SetScore(count * 10.f);
 	wave->SetZombieCount(zombieCount);
+
 	if (zombieCount == 0) {
 		gameStop = true;
 	}
@@ -137,11 +148,23 @@ void SceneGame::Draw(sf::RenderWindow& window)
 
 void SceneGame::WaveUpgrade()
 {
+	waveValue++;
+	cellCount = cellCount *  1.3f,
+	tileMap->Set((sf::Vector2i)cellCount , { 50, 50 });
 	cellCount = cellCount * 1.3f,
 		tileMap->Set((sf::Vector2i)cellCount, { 50, 50 });
 	tileMap->Reset();
 
 	zombieCount = waveValue * 5;
+	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
+
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+
+	gameStop = false;
+
+	
+}
 	ZOMBIE_MGR.SpawnZombie(zombieCount, cellCount.x * 50.f / 2.5f);
 }
 

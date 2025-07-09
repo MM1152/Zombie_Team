@@ -89,6 +89,8 @@ void TileMap::Release()
 
 void TileMap::Reset()
 {
+	sortingLayer = SortingLayers::Background;
+	sortingOrder = 0;
 	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
 	texture = &TEXTURE_MGR.Get(spriteSheetId);
 	SetOrigin(Origins::MC);

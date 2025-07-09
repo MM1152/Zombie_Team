@@ -3,6 +3,8 @@
 #include "Zombie.h"
 #include "Blood.h"
 #include "TextGo.h"
+#include "Player.h"
+
 void ZombieMgr::SpawnBlood(const sf::Transformable& trans)
 {
 	Blood* blood;
@@ -43,6 +45,9 @@ void ZombieMgr::Update(float dt)
 	for (Zombie* zombie : zombieList) {
 		zombie->Update(dt);
 
+		if (Utils::CheckCollision(zombie->GetHitBox().rect , player->GetHitBox().rect) && player->hitAble) {
+			player->OnDamage(zombie->GetDamage());
+		}
 
 		//std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
 	}
