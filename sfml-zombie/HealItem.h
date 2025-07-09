@@ -1,28 +1,23 @@
 #pragma once
-#include "GameObject.h"
-#include "HitBox.h"
-
-enum class ItemType
-{
-	Heal,
-	Ammo,
-};
+#include "Item.h"
 
 
-class Item : public GameObject
+class Player;
+class HealItem : public Item
 {
 protected:
+
 	sf::Sprite body;
-	std::string texId;
-	int amount = 0;
+	std::string texId = "graphics/health_pickup.png";
+	int healamount = 0;
 	bool isActive = false;
+	Player* player;
 
-	HitBox hitbox;
+	HitBox hitbox; // 히트박스 추가
+
 public:
-
-	Item(const std::string& name="");
-	virtual ~Item() = default;
-
+	HealItem(const std::string& name = "");
+	virtual ~HealItem() = default;
 
 	void SetPosition(const sf::Vector2f& pos) override;
 	void SetRotation(float rot) override;
@@ -36,7 +31,7 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	virtual void UseItem(int amount) = 0;
+	void UseItem(int amount) override;
 
 	sf::FloatRect GetLocalBounds() const override // 로컬 좌표계에서의 경계 사각형을 반환
 	{

@@ -12,36 +12,36 @@ class TextBullet;
 class Player : public GameObject
 {
 protected:
-	sf::Sprite body; // �÷��̾� ��������Ʈ
-	std::string texId = "graphics/player.png"; // �÷��̾� �ؽ�ó ID
+	sf::Sprite body; 
+	std::string texId = "graphics/player.png"; 
 
-	sf::Vector2f direction; // �÷��̾� �̵� ����
-	sf::Vector2f look; // �÷��̾� �ü� ����
+	sf::Vector2f direction; 
+	sf::Vector2f look; 
 
-	HitBox hitBox; // �繮 �߰�
+	HitBox hitBox; 
 	TileMap* tileMap;
 	int hp = 0;
 	int maxHp = 1000;
-	bool isAlive = true; // �÷��̾� ���� ����
+	bool isAlive = true; 
 
 	float speed = 200.f;
-	float shootInterval = 0.1f; // �Ѿ� �߻� ����
-	float shootTimer = 0.f; // �Ѿ� �߻� Ÿ�̸�
+	float shootInterval = 0.1f; 
+	float shootTimer = 0.f; 
 
 	Bullet* bullet;
-	SceneGame* sceneGame = nullptr; // �÷��̾ ���� ���� ��
-	HitBox hitBox; // �÷��̾��� ��Ʈ�ڽ�
+	SceneGame* sceneGame = nullptr; 
 
-	std::list<Bullet*> bulletList; // �Ѿ� ����Ʈ
-	std::list<Bullet*> bulletPool; // �Ѿ� Ǯ (������ ����)
+
+	std::list<Bullet*> bulletList; 
+	std::list<Bullet*> bulletPool; 
 
 
 	TextBullet* textBullet; 
 
 	int curBullet = 0;
 	int maxBullet = 20;
-	float reloadTime = 1.5f; // ���� �ð�(��)
-	bool isReloading = false; // ���� �� ����
+	float reloadTime = 1.5f; 
+	bool isReloading = false; 
 	float reloadTimer = 0.f; 
 
 public:
@@ -60,11 +60,6 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
-	sf::FloatRect GetGlobalBounds() const override
-	{
-		return body.getGlobalBounds();
-	}
-
 	sf::FloatRect GetLocalBounds() const override
 	{
 		return body.getLocalBounds();
@@ -79,22 +74,11 @@ public:
 	void SetTextBullet(TextBullet* textBullet);
 
 
-	sf::FloatRect GetLocalBounds() const override
+	void GetCurrentHp(int& Hp, int& maxHp) const
 	{
-		return body.getLocalBounds();
+		Hp = hp;
+		maxHp = this->maxHp;
 	}
-
-	sf::FloatRect GetGlobalBounds() const override
-	{
-		return body.getGlobalBounds();
-	}
-
-
-	const HitBox& GetHitBox() const
-	{
-		return hitBox;
-	}
-
 
 };
 

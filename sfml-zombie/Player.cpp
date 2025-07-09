@@ -58,7 +58,7 @@ void Player::Release()
 
 void Player::Reset()
 {
-	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) // �� �ʱ�ȭ
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) 
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 	}
@@ -67,14 +67,14 @@ void Player::Reset()
 		sceneGame = nullptr;
 	}
 
-	for (Bullet* bullet : bulletList) // bulletList�� �ִ� ��� �Ѿ��� ��Ȱ��ȭ�ϰ� bulletPool�� �ִ´�.
+	for (Bullet* bullet : bulletList) 
 	{
 		bullet->SetActive(false); 
 		bulletPool.push_back(bullet); 
 	}
 	bulletList.clear();
 
-	body.setTexture(TEXTURE_MGR.Get(texId), true); // �ؽ�ó �缳��
+	body.setTexture(TEXTURE_MGR.Get(texId), true); 
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
@@ -96,14 +96,14 @@ void Player::Update(float dt)
 	direction.x = InputMgr::GetAxis(Axis::Horizontal); 
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 
-	if (Utils::Magnitude(direction) > 1.f) // ���� ������ ũ�Ⱑ 1���� ũ��
+	if (Utils::Magnitude(direction) > 1.f) 
 	{
-		Utils::Normalize(direction); // ���� ���͸� ����ȭ
+		Utils::Normalize(direction); 
 	}
-	SetPosition(position + direction * speed * dt); // �÷��̾� ��ġ ������Ʈ
+	SetPosition(position + direction * speed * dt); 
 
-	auto it = bulletList.begin(); // �Ѿ� ����Ʈ�� ��ȸ�ϴ� �ݺ���, �Ҹ�����Ʈ���� �Ѿ� �ϳ��� ������ ��Ȱ��ȭ �Ǿ� ������ Pool�� ����ְ� ����Ʈ���� ����, Ȱ��ȭ �Ǿ������� �Ѿ
-	while (it != bulletList.end()) // ��Ȱ��ȭ�� ������Ʈ�� ���ִ� ��� ��Ȱ���ϱ� ���� ���� ��Ƶδ� ��.
+	auto it = bulletList.begin(); 
+	while (it != bulletList.end()) 
 	{
 		if (!(*it)->GetActive())
 		{
@@ -121,15 +121,15 @@ void Player::Update(float dt)
 	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // ���콺 ��ġ ��������
 	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // ���� ��ǥ�� ��ȯ
 	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // �÷��̾ �ٶ󺸴� ���� ���
-	SetRotation(Utils::Angle(look)); // �÷��̾� ȸ�� ����
+	SetRotation(Utils::Angle(look)); 
 	
 	hitBox.UpdateTransform(body, GetLocalBounds());
 
-	shootTimer += dt; // ���� Ÿ�̸� ������Ʈ
+	shootTimer += dt; 
 	if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval && curBullet > 0)
 	{
 		Shoot();
-		curBullet--; // �Ѿ� ����
+		curBullet--; 
 		shootTimer = 0.f; // ���� Ÿ�̸� �ʱ�ȭ
 
 		if (textBullet)

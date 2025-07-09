@@ -45,7 +45,7 @@ public:
 	void OnDamage(int damage);
 	void SetPlayer(Player* player);
 	const sf::Sprite& GetSprite() const { return body; };
-
+	const HitBox& GetHitBox() const { return hitBox; }
 
 	virtual sf::FloatRect GetLocalBounds() const
 	{

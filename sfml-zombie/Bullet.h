@@ -2,6 +2,10 @@
 #include "GameObject.h"
 #include "HitBox.h"
 
+
+
+
+class Zombie; 
 class SceneGame;
 class Bullet : public GameObject
 {
@@ -12,7 +16,9 @@ protected:
 	float speed = 0.f;
 	int damage = 0;
 
+
 	Zombie* zombie; //총알이 충돌한 좀비 객체
+
 	SceneGame* sceneGame = nullptr;
 	HitBox hitBox; //충돌 박스
 public:

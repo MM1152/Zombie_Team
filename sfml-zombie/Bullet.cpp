@@ -68,7 +68,7 @@ void Bullet::Reset()
 
 	direction = { 0.f,0.f };
 	speed = 0.f;
-	damage = 0;
+	damage = 30;
 }
 
 void Bullet::Update(float dt)
@@ -79,16 +79,17 @@ void Bullet::Update(float dt)
 	const auto& list = ZOMBIE_MGR.GetZombieList();
 	for(Zombie* zombie : list )
 	{
-		sf::RectangleShape rect1 = { zombie->GetLocalBounds().width , zombie->GetLocalBounds().height};
-			if (Utils::CheckCollision(hitBox.rect, rect1)
-			{
-				SetActive(false); // 총알 비활성화
-				zombie->OnDamage(damage); // 좀비에게 데미지 적용
-				break; // 충돌이 발생하면 루프를 종료
-			}
-		
+		if (!zombie->GetActive())
+			continue;
+
+		if (hitBox.rect.getGlobalBounds().intersects(zombie->GetHitBox().rect.getGlobalBounds())) // 히트박스 충돌 체크 
+		{
+			SetActive(false); // 총알 비활성화
+			zombie->OnDamage(damage); // 좀비에게 데미지 적용
+			break; 
+		}
 	}
-	
+
 }
 
 void Bullet::Draw(sf::RenderWindow& window)
