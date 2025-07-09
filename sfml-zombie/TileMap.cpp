@@ -64,7 +64,7 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 			}
 		}
 	}
-		
+	
 }
 
 void TileMap::UpdateTransform() // 가장 마지막에 구현
@@ -74,6 +74,7 @@ void TileMap::UpdateTransform() // 가장 마지막에 구현
 	transform.rotate(rotation);
 	transform.scale(scale);
 	transform.translate(-origin);
+
 }
 
 void TileMap::Init()
@@ -111,6 +112,7 @@ void TileMap::Update(float dt)
 	pos.y = Utils::Clamp(pos.y, 50 - GetOrigin().y, cellSize.y * cellCount.y - GetOrigin().y);
 
 	player->SetPosition(pos);
+
 
 }
 

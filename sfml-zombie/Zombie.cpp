@@ -66,7 +66,7 @@ void Zombie::Update(float dt)
 	SetPosition(GetPosition() + dir * speed * dt);
 	SetRotation(Utils::Angle(dir));
 
-	hitBox.UpdateTransform(body, GetLocalBounds());
+	hitBox.UpdateTransform(body, { GetLocalBounds().left + 10.f , GetLocalBounds().top + -10.f  , GetLocalBounds().width - 10.f, GetLocalBounds().height - 10.f }); // 히트박스 크기조절
 }
 
 void Zombie::Draw(sf::RenderWindow& window)
@@ -95,7 +95,7 @@ void Zombie::SetType(Types type)
 		maxHp = 60;
 		hp = maxHp;
 		damage = 10;
-		speed = 100;
+		speed = 65;
 		texId = "graphics/crawler.png";
 	}
 

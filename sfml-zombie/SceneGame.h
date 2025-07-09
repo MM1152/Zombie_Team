@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+#include "Item.h"
 
 
 class Player;
@@ -10,6 +11,8 @@ class HpBar;
 class TextBullet;
 class Wave;
 class TileMap;
+class HealItem;
+class SpriteGo;
 class SceneGame : public Scene
 {
 protected:
@@ -20,6 +23,8 @@ protected:
 	TextBullet* textBullet;
 	Wave* wave;
 	TileMap* tileMap;
+	HealItem* healItem;
+	SpriteGo* cursor;
 
 	int waveValue;
 	int zombieCount;

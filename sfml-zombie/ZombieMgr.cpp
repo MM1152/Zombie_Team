@@ -57,6 +57,11 @@ void ZombieMgr::Update(float dt)
 			zombie->OnDamage(1000000);
 		}
 	}
+	//if (InputMgr::GetKeyDown(sf::Keyboard::D)) {
+	//	for (Zombie* zombie : zombieList) {
+	//		zombie->OnDamage(1000000);
+	//	}
+	//}
 }
 
 void ZombieMgr::Release()

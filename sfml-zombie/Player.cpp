@@ -3,6 +3,8 @@
 #include "SceneGame.h"
 #include "Bullet.h"
 #include "HpBar.h"
+#include "TextBullet.h"
+
 
 Player::Player(const std::string& name)
 	: GameObject(name)
@@ -46,6 +48,8 @@ void Player::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
+
+	curBullet = maxBullet;
 	
 }
 
@@ -57,7 +61,8 @@ void Player::Reset()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
-	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) // ¾À ÃÊ±âÈ­
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) // ï¿½ï¿½ ï¿½Ê±ï¿½È­
+	if (SCENE_MGR.GetCurrentSceneId() == SceneIds::Game) 
 	{
 		sceneGame = (SceneGame*)SCENE_MGR.GetCurrentScene();
 	}
@@ -66,14 +71,14 @@ void Player::Reset()
 		sceneGame = nullptr;
 	}
 
-	for (Bullet* bullet : bulletList) // bulletList¿¡ ÀÖ´Â ¸ðµç ÃÑ¾ËÀ» ºñÈ°¼ºÈ­ÇÏ°í bulletPool¿¡ ³Ö´Â´Ù.
+	for (Bullet* bullet : bulletList) 
 	{
 		bullet->SetActive(false); 
 		bulletPool.push_back(bullet); 
 	}
 	bulletList.clear();
 
-	body.setTexture(TEXTURE_MGR.Get(texId), true); // ÅØ½ºÃ³ Àç¼³Á¤
+	body.setTexture(TEXTURE_MGR.Get(texId), true); 
 	SetOrigin(Origins::MC);
 	SetPosition({ 0.f, 0.f });
 	SetRotation(0.f);
@@ -89,21 +94,25 @@ void Player::Reset()
 	hitAble = true;
 	isAlive = true;
 	hp = maxHp;
+	hp = maxHp;		
+
 }
+
+
 
 void Player::Update(float dt)
 {
 	direction.x = InputMgr::GetAxis(Axis::Horizontal); 
 	direction.y = InputMgr::GetAxis(Axis::Vertical);
 
-	if (Utils::Magnitude(direction) > 1.f) // ¹æÇâ º¤ÅÍÀÇ Å©±â°¡ 1º¸´Ù Å©¸é
+	if (Utils::Magnitude(direction) > 1.f) 
 	{
-		Utils::Normalize(direction); // ¹æÇâ º¤ÅÍ¸¦ Á¤±ÔÈ­
+		Utils::Normalize(direction); 
 	}
-	SetPosition(position + direction * speed * dt); // ÇÃ·¹ÀÌ¾î À§Ä¡ ¾÷µ¥ÀÌÆ®
+	SetPosition(position + direction * speed * dt); 
 
-	auto it = bulletList.begin(); // ÃÑ¾Ë ¸®½ºÆ®¸¦ ¼øÈ¸ÇÏ´Â ¹Ýº¹ÀÚ, ºÒ¸´¸®½ºÆ®¿¡¼­ ÃÑ¾Ë ÇÏ³ª¾¿ ²¨³»¼­ ºñÈ°¼ºÈ­ µÇ¾î ÀÖÀ¸¸é Pool¿¡ Áý¾î³Ö°í ¸®½ºÆ®¿¡¼­ »èÁ¦, È°¼ºÈ­ µÇ¾îÀÖÀ¸¸é ³Ñ¾î°¨
-	while (it != bulletList.end()) // ºñÈ°¼ºÈ­µÈ ¿ÀºêÁ§Æ®¸¦ ¾ø¾Ö´Â ´ë½Å ÀçÈ°¿ëÇÏ±â À§ÇØ µû·Î ¸ð¾ÆµÎ´Â °Í.
+	auto it = bulletList.begin(); 
+	while (it != bulletList.end()) 
 	{
 		if (!(*it)->GetActive())
 		{
@@ -116,18 +125,21 @@ void Player::Update(float dt)
 		}
 	}
 
-	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // ¸¶¿ì½º À§Ä¡ °¡Á®¿À±â
-	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // ¿ùµå ÁÂÇ¥·Î º¯È¯
-	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // ÇÃ·¹ÀÌ¾î°¡ ¹Ù¶óº¸´Â ¹æÇâ °è»ê
-	SetRotation(Utils::Angle(look)); // ÇÃ·¹ÀÌ¾î È¸Àü ¼³Á¤
+	
+
+	sf::Vector2i mousePosition = InputMgr::GetMousePosition(); // ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	sf::Vector2f mouseWorldPosition = sceneGame->ScreenToWorld(mousePosition); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç¥ï¿½ï¿½ ï¿½ï¿½È¯
+	look = Utils::GetNormal(mouseWorldPosition - GetPosition()); // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½Ù¶óº¸´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
+	SetRotation(Utils::Angle(look)); 
 	
 	hitBox.UpdateTransform(body, GetLocalBounds());
 
-	shootTimer += dt; // ½´ÆÃ Å¸ÀÌ¸Ó ¾÷µ¥ÀÌÆ®
-	if(InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer>shootInterval)
+	shootTimer += dt; 
+	if (InputMgr::GetMouseButton(sf::Mouse::Left) && shootTimer > shootInterval && curBullet > 0)
 	{
 		Shoot();
 		shootTimer = 0.f;	
+		curBullet--;
 	}
 	
 	hitTimer += dt;
@@ -136,13 +148,41 @@ void Player::Update(float dt)
 		hitAble = true;
 	}
 	
+
+	if (textBullet)
+	{
+		textBullet->SetBulletCount(curBullet, maxBullet);
+	}
+
+	if (isReloading) 
+	{
+		reloadTimer += dt; 
+		if (reloadTimer >= reloadTime) 
+		{
+			curBullet = maxBullet ;
+			isReloading = false; 
+			reloadTimer = 0.f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
+
+			if (textBullet)
+			{
+				textBullet->SetBulletCount(curBullet, maxBullet);
+			}
+		}
+	}
+
+	if (InputMgr::GetKeyDown(sf::Keyboard::R) && !isReloading)
+	{
+		isReloading = true; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Â·ï¿½ ï¿½ï¿½ï¿½ï¿½
+		reloadTimer = 0.f; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
+	}	
+
+
 }
 
 void Player::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
 	hitBox.Draw(window);
-	
 }
 
 void Player::SettingHpBar(HpBar* hpBar)
@@ -153,23 +193,24 @@ void Player::SettingHpBar(HpBar* hpBar)
 void Player::Shoot()
 {
 	Bullet* bullet = nullptr;
-	if(bulletPool.empty()) // ÃÑ¾ËÀÌ ¾øÀ¸¸é »õ·Î »ý¼º
+	if(bulletPool.empty()) // ï¿½Ñ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	{
-		bullet = new Bullet(); // ÃÑ¾Ë °´Ã¼ »ý¼º
+		bullet = new Bullet(); // ï¿½Ñ¾ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½
 		bullet->Init(); 
 	}
-	else // ÃÑ¾ËÀÌ ÀÖÀ¸¸é Ç®¿¡¼­ °¡Á®¿À±â
+	else // ï¿½Ñ¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ç®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	{
-		bullet = bulletPool.front(); // Ç®¿¡¼­ Ã¹ ¹øÂ° ÃÑ¾Ë °¡Á®¿À±â
-		bulletPool.pop_front(); // ÃÑ¾Ë Ç®¿¡¼­ Á¦°Å
-		bullet->SetActive(true); // ÃÑ¾Ë È°¼ºÈ­
+		bullet = bulletPool.front(); // Ç®ï¿½ï¿½ï¿½ï¿½ Ã¹ ï¿½ï¿½Â° ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		bulletPool.pop_front(); // ï¿½Ñ¾ï¿½ Ç®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		bullet->SetActive(true); // ï¿½Ñ¾ï¿½ È°ï¿½ï¿½È­
 	}
 
 	bullet->Reset();
 	bullet->Fire(position + look * 10.f, look, 1000.f, 10);
 
-	bulletList.push_back(bullet); // ÃÑ¾Ë ¸®½ºÆ®¿¡ Ãß°¡
+	bulletList.push_back(bullet); // ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ß°ï¿½
 	sceneGame->AddGameObject(bullet);
+	
 }
 
 void Player::OnDamage(int damage)
@@ -187,8 +228,13 @@ void Player::OnDamage(int damage)
 	{
 		hp = 0;
 		
-		isAlive = false; // ÇÃ·¹ÀÌ¾î°¡ Á×¾úÀ½À» Ç¥½Ã
+		isAlive = false; // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½×¾ï¿½ï¿½ï¿½ï¿½ï¿½ Ç¥ï¿½ï¿½
 		SCENE_MGR.ChangeScene(SceneIds::Game);
 	}
 	hpbar->SettingHp(hp, maxHp);
+}
+
+void Player::SetTextBullet(TextBullet* textBullet) // TextBulletï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½Ô¼ï¿½
+{
+	this->textBullet = textBullet; // ï¿½Ú±ï¿½ï¿½Ú½ï¿½ï¿½ï¿½ TextBulletï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 }
