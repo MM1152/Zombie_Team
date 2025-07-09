@@ -7,6 +7,7 @@
 #include "HpBar.h"
 #include "TextBullet.h"
 #include "TileMap.h"
+#include "Wave.h"
 SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
 }
@@ -16,7 +17,7 @@ void SceneGame::Init()
 {
 	
 
-	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ¾ê³× Ãß°¡ÇÏ¸é ¾È³³ÀÛÇÔ
+	worldView.setSize({ FRAMEWORK.GetWindowSizeF().x , FRAMEWORK.GetWindowSizeF().y }); // ï¿½ï¿½ï¿½ ï¿½ß°ï¿½ï¿½Ï¸ï¿½ ï¿½È³ï¿½ï¿½ï¿½ï¿½ï¿½
 	worldView.setCenter({ 0.f , 0.f });
 
 	uiView.setSize({ FRAMEWORK.GetWindowSizeF().x, FRAMEWORK.GetWindowSizeF().y });
@@ -37,20 +38,23 @@ void SceneGame::Init()
 	textScore = new TextScore();
 	hpbar = new HpBar();
 	textBullet = new TextBullet();
-
+	wave = new Wave();
+	tileMap = new TileMap("TileMap");
 
 	AddGameObject(textBullet);
 	AddGameObject(hpbar);
 	AddGameObject(textScore);
 	player = (Player*)AddGameObject(new Player("Player"));
-	AddGameObject(new TileMap("TileMap"));
+	AddGameObject(tileMap);
+	AddGameObject(wave);
+
 
 	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
 
 
 
-	player->SetTextBullet(textBullet); // ÇÃ·¹ÀÌ¾î¿¡ ¿¬°áÇØ¾ß SetBulletCount(int curCount, int maxCount) °¡ ¾÷µ¥ÀÌÆ®µÊ
+	player->SetTextBullet(textBullet); // ï¿½Ã·ï¿½ï¿½Ì¾î¿¡ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¾ï¿½ SetBulletCount(int curCount, int maxCount) ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½
 
 
 
@@ -64,7 +68,23 @@ void SceneGame::Init()
 void SceneGame::Enter()
 {
 	ZOMBIE_MGR.Enter();
-	Scene::Enter(); // Ç×»ó ºÎ¸ðÀÇ Å¬·¡½º enter¸¦ È£ÃâÇØ¾ß ÇÕ´Ï´Ù.
+	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2});
+
+	waveValue = 1;
+	cellCount = { 10 , 10 };
+
+	tileMap->Set((sf::Vector2i)cellCount, { 50, 50 });
+
+	zombieCount = waveValue * 5;
+	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
+
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x  - 500.f, FRAMEWORK.GetWindowSizeF().y - 200.f});
+	gameStop = false;
+
+	waveValue++;
+	Scene::Enter(); // ï¿½×»ï¿½ ï¿½Î¸ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½ enterï¿½ï¿½ È£ï¿½ï¿½ï¿½Ø¾ï¿½ ï¿½Õ´Ï´ï¿½.
 }
 
 
@@ -78,13 +98,25 @@ void SceneGame::Exit()
 
 void SceneGame::Update(float dt)
 {
+
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
 		ZOMBIE_MGR.SpawnZombie(1);
 		textBullet->SetBulletCount(20, 20);
 	}
 	
 	int count = ZOMBIE_MGR.GetDieZombieCount();
+	zombieCount -= count;
 	textScore->SetScore(count * 10.f);
+	wave->SetZombieCount(zombieCount);
+	if (zombieCount == 0) {
+		gameStop = true;
+	}
+
+	if (gameStop && InputMgr::GetKeyDown(sf::Keyboard::Enter)) {
+		WaveUpgrade();
+		gameStop = false;
+	}
+	
 	worldView.setCenter(player->GetPosition());
 	Scene::Update(dt);
 }
@@ -93,6 +125,23 @@ void SceneGame::Update(float dt)
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);
+}
+
+void SceneGame::WaveUpgrade()
+{
+	cellCount = cellCount *  1.3f,
+	tileMap->Set((sf::Vector2i)cellCount , { 50, 50 });
+	tileMap->Reset();
+
+	zombieCount = waveValue * 5;
+	ZOMBIE_MGR.SpawnZombie(zombieCount , cellCount.x * 50.f / 2.5f);
+
+	wave->SetWaveString(waveValue);
+	wave->SetZombieCount(zombieCount);
+
+	gameStop = false;
+
+	waveValue++;
 }
 					 
 				

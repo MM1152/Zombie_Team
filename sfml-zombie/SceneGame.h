@@ -8,7 +8,8 @@ class Zombie;
 class TextScore;
 class HpBar;
 class TextBullet;
-
+class Wave;
+class TileMap;
 class SceneGame : public Scene
 {
 protected:
@@ -17,7 +18,14 @@ protected:
 	TextScore* textScore;
 	HpBar* hpbar;
 	TextBullet* textBullet;
-	
+	Wave* wave;
+	TileMap* tileMap;
+
+	int waveValue;
+	int zombieCount;
+ 	sf::Vector2f cellCount;
+
+	bool gameStop;
 public:
 	SceneGame();
 	~SceneGame() override = default;
@@ -27,5 +35,7 @@ public:
 	void Exit() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	void WaveUpgrade();
 };
 

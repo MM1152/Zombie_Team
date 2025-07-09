@@ -166,6 +166,7 @@
     <ClCompile Include="TextScore.cpp" />
     <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="Variables.cpp" />
+    <ClCompile Include="Wave.cpp" />
     <ClCompile Include="Zombie.cpp" />
     <ClCompile Include="ZombieMgr.cpp" />
   </ItemGroup>
@@ -196,6 +197,7 @@
     <ClInclude Include="TextScore.h" />
     <ClInclude Include="TileMap.h" />
     <ClInclude Include="Variables.h" />
+    <ClInclude Include="Wave.h" />
     <ClInclude Include="Zombie.h" />
     <ClInclude Include="ZombieMgr.h" />
   </ItemGroup>

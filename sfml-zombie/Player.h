@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "TextBullet.h"
 #include "HitBox.h"
+#include "TileMap.h"
 
 class SceneGame;
 class Bullet;
@@ -11,34 +12,36 @@ class TextBullet;
 class Player : public GameObject
 {
 protected:
-	sf::Sprite body; // ÇÃ·¹ÀÌ¾î ½ºÇÁ¶óÀÌÆ®
-	std::string texId = "graphics/player.png"; // ÇÃ·¹ÀÌ¾î ÅØ½ºÃ³ ID
+	sf::Sprite body; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+	std::string texId = "graphics/player.png"; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ø½ï¿½Ã³ ID
 
-	sf::Vector2f direction; // ÇÃ·¹ÀÌ¾î ÀÌµ¿ ¹æÇâ
-	sf::Vector2f look; // ÇÃ·¹ÀÌ¾î ½Ã¼± ¹æÇâ
+	sf::Vector2f direction; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½
+	sf::Vector2f look; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½Ã¼ï¿½ ï¿½ï¿½ï¿½ï¿½
 
+	HitBox hitBox; // ï¿½ç¹® ï¿½ß°ï¿½
+	TileMap* tileMap;
 	int hp = 0;
 	int maxHp = 1000;
-	bool isAlive = true; // ÇÃ·¹ÀÌ¾î »ýÁ¸ ¿©ºÎ
+	bool isAlive = true; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
 	float speed = 200.f;
-	float shootInterval = 0.1f; // ÃÑ¾Ë ¹ß»ç °£°Ý
-	float shootTimer = 0.f; // ÃÑ¾Ë ¹ß»ç Å¸ÀÌ¸Ó
+	float shootInterval = 0.1f; // ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½
+	float shootTimer = 0.f; // ï¿½Ñ¾ï¿½ ï¿½ß»ï¿½ Å¸ï¿½Ì¸ï¿½
 
 	Bullet* bullet;
-	SceneGame* sceneGame = nullptr; // ÇÃ·¹ÀÌ¾î°¡ ¼ÓÇÑ °ÔÀÓ ¾À
-	HitBox hitBox; // ÇÃ·¹ÀÌ¾îÀÇ È÷Æ®¹Ú½º
+	SceneGame* sceneGame = nullptr; // ï¿½Ã·ï¿½ï¿½Ì¾î°¡ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+	HitBox hitBox; // ï¿½Ã·ï¿½ï¿½Ì¾ï¿½ï¿½ï¿½ ï¿½ï¿½Æ®ï¿½Ú½ï¿½
 
-	std::list<Bullet*> bulletList; // ÃÑ¾Ë ¸®½ºÆ®
-	std::list<Bullet*> bulletPool; // ÃÑ¾Ë Ç® (Àç»ç¿ëÀ» À§ÇÑ)
+	std::list<Bullet*> bulletList; // ï¿½Ñ¾ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®
+	std::list<Bullet*> bulletPool; // ï¿½Ñ¾ï¿½ Ç® (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
 
 
 	TextBullet* textBullet; 
 
 	int curBullet = 0;
 	int maxBullet = 20;
-	float reloadTime = 1.5f; // ÀåÀü ½Ã°£(ÃÊ)
-	bool isReloading = false; // ÀåÀü Áß ¿©ºÎ
+	float reloadTime = 1.5f; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½(ï¿½ï¿½)
+	bool isReloading = false; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	float reloadTimer = 0.f; 
 
 public:
@@ -56,6 +59,20 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+	sf::FloatRect GetGlobalBounds() const override
+	{
+		return body.getGlobalBounds();
+	}
+
+	sf::FloatRect GetLocalBounds() const override
+	{
+		return body.getLocalBounds();
+	}
+	const HitBox& GetHitBox() const
+	{
+		return hitBox;
+	}
 
 	void Shoot();
 	void OnDamage(int damage);

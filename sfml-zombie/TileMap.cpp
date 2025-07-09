@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "TileMap.h"
+#include "Player.h"
 
 TileMap::TileMap(const std::string& name) : GameObject(name)
 {
@@ -46,10 +47,9 @@ void TileMap::Set(const sf::Vector2i& count, const sf::Vector2f& size)
 				
 				sf::Transformable tr;
 				tr.setPosition(tileRect.left, tileRect.top); // 타일의 좌상단에 포지션잡기
-
+				
 				hitBox.UpdateTransform(tr, tileRect);
 				hitBoxes.push_back(hitBox);
-				
 			}
 
 			int quadIndex = i * count.x + j;			   // VertexArray 인덱스
@@ -81,8 +81,6 @@ void TileMap::Init()
 	// 레이어 젤 뒤에 설정
 	sortingLayer = SortingLayers::Background;
 	sortingOrder = 0;
-
-	Set({ 50, 50 }, { 50.f, 50.f });
 }
 
 void TileMap::Release()
@@ -91,15 +89,27 @@ void TileMap::Release()
 
 void TileMap::Reset()
 {
+	player = (Player*)SCENE_MGR.GetCurrentScene()->FindGameObject("Player");
 	texture = &TEXTURE_MGR.Get(spriteSheetId);
-
 	SetOrigin(Origins::MC);
+	for (int i = 0; i < hitBoxes.size(); ++i)
+	{
+		std::cout << hitBoxes[i].rect.getPosition().x << ", " << hitBoxes[i].rect.getPosition().y << std::endl;
+		hitBoxes[i].rect.setPosition(hitBoxes[i].rect.getPosition() - GetOrigin());
+	}
 	SetScale({ 1.f,1.f });
 	SetPosition({ 0.f,0.f });
 }
 
 void TileMap::Update(float dt)
 {
+	sf::Vector2f pos = player->GetPosition();
+	//std::cout << GetOrigin().x << std::endl;
+	pos.x = Utils::Clamp(pos.x, 50 - GetOrigin().x, cellSize.x * cellCount.x - GetOrigin().x);
+	pos.y = Utils::Clamp(pos.y, 50 - GetOrigin().y, cellSize.y * cellCount.y - GetOrigin().y);
+
+	player->SetPosition(pos);
+
 }
 
 void TileMap::Draw(sf::RenderWindow& window)
@@ -111,9 +121,9 @@ void TileMap::Draw(sf::RenderWindow& window)
 
 	if (Variables::isDrawHitBox)
 	{
-		for (auto& hitBox : hitBoxes)
+		for (int i = 0; i < hitBoxes.size(); ++i)
 		{
-			hitBox.Draw(window);
+			hitBoxes[i].Draw(window);
 		}
 	}
 }
@@ -128,21 +138,25 @@ bool TileMap::IsCollision(sf::FloatRect rect)
 void TileMap::SetPosition(const sf::Vector2f& pos)
 {
 	GameObject::SetPosition(pos);
+	UpdateTransform();
 }
 
 void TileMap::SetRotation(float rot)
 {
 	GameObject::SetRotation(rot);
+	UpdateTransform();
 }
 
 void TileMap::SetScale(const sf::Vector2f& s)
 {
 	GameObject::SetScale(s);
+	UpdateTransform();
 }
 
 void TileMap::SetOrigin(const sf::Vector2f& o)
 {
 	GameObject::SetOrigin(o);
+	UpdateTransform();
 }
 
 void TileMap::SetOrigin(Origins preset)
