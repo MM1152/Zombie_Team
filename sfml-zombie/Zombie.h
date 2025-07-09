@@ -16,6 +16,7 @@ protected:
 	sf::Vector2f dir;
 
 	Player* player;
+	HitBox hitBox;
 	// 플레이어 연결 필요
 public:
 	enum class Types {
@@ -44,5 +45,17 @@ public:
 	void OnDamage(int damage);
 	void SetPlayer(Player* player);
 	const sf::Sprite& GetSprite() const { return body; };
+
+
+	virtual sf::FloatRect GetLocalBounds() const
+	{
+		return body.getLocalBounds();
+	}
+
+	virtual sf::FloatRect GetGlobalBounds() const
+	{
+		return body.getGlobalBounds();
+	}
+
 };
 
