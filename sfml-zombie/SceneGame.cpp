@@ -7,6 +7,7 @@
 #include "HpBar.h"
 #include "TextBullet.h"
 #include "TileMap.h"
+#include "Wave.h"
 SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
 }
@@ -37,13 +38,15 @@ void SceneGame::Init()
 	textScore = new TextScore();
 	hpbar = new HpBar();
 	textBullet = new TextBullet();
-
+	wave = new Wave();
 
 	AddGameObject(textBullet);
 	AddGameObject(hpbar);
 	AddGameObject(textScore);
 	player = (Player*)AddGameObject(new Player("Player"));
 	AddGameObject(new TileMap("TileMap"));
+	AddGameObject(wave);
+
 
 	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
@@ -54,6 +57,7 @@ void SceneGame::Init()
 void SceneGame::Enter()
 {
 	ZOMBIE_MGR.Enter();
+	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2});
 	Scene::Enter(); // 항상 부모의 클래스 enter를 호출해야 합니다.
 }
 
@@ -69,8 +73,12 @@ void SceneGame::Exit()
 void SceneGame::Update(float dt)
 {
 	if (InputMgr::GetKeyDown(sf::Keyboard::Space)) {
-		ZOMBIE_MGR.SpawnZombie(1);
-		textBullet->SetBulletCount(10, 20);
+		int zombieCount = waveValue * 5;
+		ZOMBIE_MGR.SpawnZombie(zombieCount);
+		wave->SetWaveString(waveValue);
+		wave->SetZombieCount(zombieCount);
+		waveValue++;
+
 	}
 	
 	int count = ZOMBIE_MGR.GetDieZombieCount();

@@ -8,7 +8,7 @@ class Zombie;
 class TextScore;
 class HpBar;
 class TextBullet;
-
+class Wave;
 class SceneGame : public Scene
 {
 protected:
@@ -17,7 +17,9 @@ protected:
 	TextScore* textScore;
 	HpBar* hpbar;
 	TextBullet* textBullet;
-	
+	Wave* wave;
+
+	int waveValue;
 public:
 	SceneGame();
 	~SceneGame() override = default;

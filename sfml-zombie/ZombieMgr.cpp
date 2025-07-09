@@ -42,6 +42,8 @@ void ZombieMgr::Update(float dt)
 	
 	for (Zombie* zombie : zombieList) {
 		zombie->Update(dt);
+
+
 		//std::cout << zombie->GetPosition().x << ", " << zombie->GetPosition().y << std::endl;
 	}
 	
