@@ -6,7 +6,6 @@ class SceneGame;
 class Bullet : public GameObject
 {
 protected:
-
 	sf::Sprite body; 
 	std::string texId = "graphics/bullet.png"; //텍스처 아이디
 	sf::Vector2f direction; //총알의 방향

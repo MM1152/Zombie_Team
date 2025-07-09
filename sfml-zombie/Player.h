@@ -1,8 +1,10 @@
 #pragma once
 #include "GameObject.h"
+#include "TextBullet.h"
 
 class SceneGame;
 class Bullet;
+
 
 
 class Player : public GameObject
@@ -28,6 +30,13 @@ protected:
 	std::list<Bullet*> bulletList; // 총알 리스트
 	std::list<Bullet*> bulletPool; // 총알 풀 (재사용을 위한)
 
+
+	int curBullet = 0;
+	int maxBullet = 20;
+	float reloadTime = 1.0f; // 장전 시간(초)
+	bool isReloading = false;
+	float reloadTimer = 0.f;
+
 public:
 	Player(const std::string& name = "");
 	virtual ~Player() = default;
@@ -46,5 +55,6 @@ public:
 
 	void Shoot();
 	void OnDamage(int damage);
+
 };
 

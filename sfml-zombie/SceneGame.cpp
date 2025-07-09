@@ -76,8 +76,6 @@ void SceneGame::Update(float dt)
 }
 
 
-
-
 void SceneGame::Draw(sf::RenderWindow& window)
 {
 	Scene::Draw(window);

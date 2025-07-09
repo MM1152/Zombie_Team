@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "SceneGame.h"
 #include "Bullet.h"
+#include "TextBullet.h"
 
 
 Player::Player(const std::string& name)
@@ -48,6 +49,7 @@ void Player::Init()
 {
 	sortingLayer = SortingLayers::Foreground;
 	sortingOrder = 0;
+
 	
 }
 
@@ -85,8 +87,9 @@ void Player::Reset()
 	shootTimer = 0.f;
 	shootInterval = 0.1f; 
 
-	hp = maxHp;
-
+	hp = maxHp;		
+	 
+	 
 
 }
 
