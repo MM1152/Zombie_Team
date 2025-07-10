@@ -74,6 +74,7 @@ void ZombieMgr::Release()
 void ZombieMgr::Enter()
 {
 	for (auto i : zombieList) {
+		i->SetActive(false);
 		zombiePool.push_back(i);
 	}
 	zombieList.clear();
