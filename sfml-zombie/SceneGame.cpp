@@ -89,7 +89,7 @@ void SceneGame::Enter()
 	zombieCount = waveValue * 5;
 
 	gameStop = false;
-	
+
 	// 여기에 넣어둘게 너무 길어질거 같아서 접어둘거임
 #pragma region UpGradeText
 	upGrade1 = (Button*)(AddGameObject(new Button("fonts/zombiecontrol.ttf")));
@@ -113,8 +113,8 @@ void SceneGame::Enter()
 	upGrade1->setTextOrigin(Origins::MC);
 	upGrade1->SetActive(false);
 	upGrade1->setButtonPtr([this](){
-		Bullet::speed += 10;
-		Bullet::damage += 10;
+		player->bulletDamage += 30;
+		player->bulletSpeed += 100;
 		isPressed = true;
 	});
 	
@@ -205,6 +205,7 @@ void SceneGame::Enter()
 		isPressed = true;
 		});
 #pragma endregion
+	tileMap->Set((sf::Vector2i)cellCount, { 50, 50 });
 
 	Scene::Enter(); // �׻� �θ��� Ŭ���� enter�� ȣ���ؾ� �մϴ�.
 
@@ -213,11 +214,16 @@ void SceneGame::Enter()
 	back->SetPosition({ 0.f,0.f });
 	back->SetActive(false);
 
-	tileMap->Set((sf::Vector2i)cellCount, { 50, 50 });
+	
 	wave->SetWaveString(waveValue);
 	wave->SetZombieCount(zombieCount);
 	wave->SetPosition({ FRAMEWORK.GetWindowSizeF().x - 500.f, FRAMEWORK.GetWindowSizeF().y - 200.f });
 	ZOMBIE_MGR.SpawnZombie(zombieCount, cellCount.x * 50.f / 2.5f);
+
+
+	cursor->sortingLayer = SortingLayers::UI;
+	cursor->sortingOrder = 101;
+	
 	//Scene::Enter(); // 항상 부모의 클래스 enter를 호출해야 합니다.
 }
 
@@ -266,7 +272,7 @@ void SceneGame::Update(float dt)
 	
 	worldView.setCenter(player->GetPosition());
 	
-	cursor->SetPosition((sf::Vector2f)ScreenToWorld(InputMgr::GetMousePosition()));
+	cursor->SetPosition((sf::Vector2f)InputMgr::GetMousePosition());
 	
 	Scene::Update(dt);
 
@@ -306,6 +312,7 @@ void SceneGame::WaveUpgrade()
 
 	gameStop = false;
 	FRAMEWORK.SetTimeScale(1.f);
+	player->ResetItem();
 }
 
 void SceneGame::Upgrade()

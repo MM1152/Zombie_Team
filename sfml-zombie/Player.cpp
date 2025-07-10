@@ -76,6 +76,7 @@ void Player::Reset()
 		bulletPool.push_back(bullet); 
 	}
 	bulletList.clear();
+	ResetItem();
 
 	body.setTexture(TEXTURE_MGR.Get(texId), true); 
 	SetOrigin(Origins::MC);
@@ -179,6 +180,8 @@ void Player::Update(float dt)
 			sceneGame->RemoveGameObject(*itemIter);
 			SOUND_MGR.Play(Audio::PICKUP);
 			itemIter = itemList.erase(itemIter);
+
+			hpbar->SettingHp(hp , maxHp);
 		}
 		else {
 			itemIter++;
@@ -213,7 +216,7 @@ void Player::Shoot()
 	}
 
 	bullet->Reset();
-	bullet->Fire(position + look * 10.f, look, 1000.f, 10);
+	bullet->Fire(position + look * 10.f, look, bulletSpeed, bulletDamage);
 
 	bulletList.push_back(bullet); // �Ѿ� ����Ʈ�� �߰�
 	sceneGame->AddGameObject(bullet);
@@ -243,6 +246,18 @@ void Player::OnDamage(int damage)
 void Player::SetTextBullet(TextBullet* textBullet) 
 {
 	this->textBullet = textBullet; 
+}
+
+void Player::ResetItem()
+{
+	std::list<Item*>::iterator itemIter = itemList.begin();
+
+	while (itemIter != itemList.end()) {
+		(*itemIter)->SetActive(false);
+		sceneGame->RemoveGameObject(*itemIter);
+		itemIter = itemList.erase(itemIter);
+	}
+	Item::fieldSpawnItemCount = 0;
 }
 
 void Player::SetItem(Item* item)

@@ -13,7 +13,7 @@ class HealItem;
 class Item : public GameObject
 {
 protected:
-	static int fieldSpawnItemCount;
+	
 	sf::Sprite body;
 	std::string texId;
 	int amount = 0;
@@ -25,7 +25,7 @@ protected:
 	Player* player;
 	HitBox hitBox;
 public:
-
+	static int fieldSpawnItemCount;
 	Item(const std::string& name = "", const std::string& texId = "");
 	virtual ~Item() = default;
 

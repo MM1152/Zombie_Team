@@ -40,6 +40,7 @@ protected:
 	float shootInterval = 0.1f; 
 	float shootTimer = 0.f; 
 
+
 	Bullet* bullet;
 	SceneGame* sceneGame = nullptr; 
 
@@ -57,6 +58,10 @@ protected:
 	std::list<Item*> itemList;
 public:
 	bool hitAble = false;
+
+	int bulletDamage = 10.f;
+	int bulletSpeed = 200.f;
+
 	Player(const std::string& name = "");
 	virtual ~Player() = default;
 
@@ -71,6 +76,8 @@ public:
 	void Reset() override;
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
+
+
 
 	void UpGradeMaxHp(int upHp)  
 	{ 
@@ -101,6 +108,7 @@ public:
 	void Shoot();
 	void OnDamage(int damage);
 	void SetTextBullet(TextBullet* textBullet);
+	void ResetItem();
 	void SetItem(Item* item);
 
 	void Heal(int healamount);
