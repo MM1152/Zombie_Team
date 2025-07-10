@@ -14,10 +14,12 @@ class Wave;
 class TileMap;
 class HealItem;
 class SpriteGo;
+class AmmoItem;
+
 class SceneGame : public Scene
 {
 protected:
-	Player* player = nullptr;
+	Player* player;
 	Button* button = nullptr;
 	Zombie* zombie;
 	TextScore* textScore;
@@ -27,6 +29,9 @@ protected:
 	TileMap* tileMap;
 	HealItem* healItem;
 	SpriteGo* cursor;
+	AmmoItem* Ammoitem;
+
+	float timer = 0.f;
 
 	SpriteGo* back;
 
@@ -38,11 +43,12 @@ protected:
 	Button* upGrade5;
 	Button* upGrade6;
 
+	std::vector<Button*> upGrade;
+	bool isPressed = false;
 	
 	int waveValue;
 	int zombieCount;
  	sf::Vector2f cellCount;
-
 	bool gameStop;
 
 public:
@@ -57,5 +63,6 @@ public:
 	bool GetGameStop() const { return gameStop; }
 	void WaveUpgrade();
 	void Upgrade();
-};
 
+	static void SetPlayerFireSpeed();
+};

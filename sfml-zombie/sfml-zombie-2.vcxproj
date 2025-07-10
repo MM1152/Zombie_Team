@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AmmoItem.cpp" />
     <ClCompile Include="Blood.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
@@ -161,6 +162,7 @@
     <ClCompile Include="Framework\SceneMgr.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SoundMgr.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
@@ -175,6 +177,7 @@
     <ClCompile Include="ZombieMgr.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AmmoItem.h" />
     <ClInclude Include="Blood.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
@@ -198,6 +201,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Framework\SceneMgr.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SoundMgr.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Framework\TextGo.h" />
     <ClInclude Include="Framework\Utils.h" />

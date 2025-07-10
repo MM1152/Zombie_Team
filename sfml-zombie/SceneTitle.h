@@ -5,6 +5,7 @@
 class SceneTitle : public Scene
 {
 protected:
+	TextGo* title;
 	Button* startText;
 	Button* exitText;
 	

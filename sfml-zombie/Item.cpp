@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "Item.h"
+#include "HealItem.h"
+#include "AmmoItem.h"
+
+int Item::fieldSpawnItemCount = 0;
 
 
-
-Item::Item(const std::string& name)
+Item::Item(const std::string& name, const std::string& texId)
 	: GameObject(name)
+	, texId(texId)
 {
 }
 
@@ -51,14 +55,39 @@ void Item::Release()
 
 void Item::Reset()
 {
+	body.setTexture(TEXTURE_MGR.Get(texId));
+	sortingLayer = SortingLayers::Foreground;
+	sortingOrder = 1;
+
 }
 
 void Item::Update(float dt)
 {
+	hitBox.UpdateTransform(body, GetGlobalBounds()); // 히트박스 업데이트
+
 }
 
 void Item::Draw(sf::RenderWindow& window)
 {
 	window.draw(body);
-	
+	hitBox.Draw(window);
+}
+
+Item* Item::SpawnItem()
+{
+	Item* item = nullptr;
+	if (fieldSpawnItemCount > 3) return item;
+
+	fieldSpawnItemCount++;
+	int rand = Utils::RandomRange(0, 2);
+
+	if (rand == 0)
+	{
+		item = new HealItem();
+	}
+	if (rand == 1)
+	{
+		item = new AmmoItem();
+	}
+	return item;
 }

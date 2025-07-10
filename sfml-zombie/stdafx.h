@@ -7,6 +7,7 @@
 #include <list>
 #include <unordered_map>
 #include <algorithm>
+#include <functional>
 
 // SFML
 #include <SFML/Graphics.hpp>
@@ -15,6 +16,7 @@
 // FRAMEWORK
 #include "Defines.h"
 #include "Variables.h"
+#include "SoundMgr.h"
 #include "Utils.h"
 #include "Singleton.h"
 #include "ResourceMgr.h"

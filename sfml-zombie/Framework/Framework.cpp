@@ -9,6 +9,8 @@ void Framework::Init(int w, int h, const std::string& t)
 	FONT_MGR.Load(fontIds);
 	SOUNDBUFFER_MGR.Load(soundIds);
 
+    SOUND_MGR.Init();
+
     Utils::Init();
 	InputMgr::Init();
     ZOMBIE_MGR.Init();

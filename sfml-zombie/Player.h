@@ -3,12 +3,15 @@
 #include "TextBullet.h"
 #include "HitBox.h"
 #include "TileMap.h"
+#include "Item.h"
+#include "HealItem.h"
+#include "AmmoItem.h"
 
 class SceneGame;
 class Bullet;
 class HpBar;
 class TextBullet;
-
+class HealItem;
 
 class Player : public GameObject
 {
@@ -19,19 +22,19 @@ protected:
 	sf::Vector2f direction; 
 	sf::Vector2f look; 
 
-	
 	HpBar* hpbar;
 
 	HitBox hitBox; 
 	TileMap* tileMap;
+
 	int hp = 0;
 	int maxHp = 1000;
+	int healamount = 100;
+	int Ammoamount;
 	bool isAlive = true; 
 
 	float speed = 200.f;
 	
-
-
 	float hitInterval = 0.2f;
 	float hitTimer = 0.f;
 	float shootInterval = 0.1f; 
@@ -40,19 +43,18 @@ protected:
 	Bullet* bullet;
 	SceneGame* sceneGame = nullptr; 
 
-
 	std::list<Bullet*> bulletList; 
 	std::list<Bullet*> bulletPool; 
-
 
 	TextBullet* textBullet; 
 
 	int curBullet = 0;
 	int maxBullet = 20;
-	float reloadTime = 1.5f; 
+	float reloadTime = 1.0f; 
 	bool isReloading = false; 
 	float reloadTimer = 0.f; 
 
+	std::list<Item*> itemList;
 public:
 	bool hitAble = false;
 	Player(const std::string& name = "");
@@ -70,6 +72,22 @@ public:
 	void Update(float dt) override;
 	void Draw(sf::RenderWindow& window) override;
 
+	void UpGradeMaxHp(int upHp)  
+	{ 
+		maxHp += upHp;
+		std::cout << maxHp << std::endl;
+	}
+
+	void UpGradeBullet(int max) {  
+		maxBullet += max; 
+		std::cout << maxBullet << std::endl;
+	}
+
+	void UpGradeSpeed(float speed) {
+		this->speed += speed;
+		std::cout << this->speed << std::endl;
+	}
+
 	sf::FloatRect GetLocalBounds() const override
 	{
 		return body.getLocalBounds();
@@ -83,13 +101,10 @@ public:
 	void Shoot();
 	void OnDamage(int damage);
 	void SetTextBullet(TextBullet* textBullet);
+	void SetItem(Item* item);
 
-
-	void GetCurrentHp(int& Hp, int& maxHp) const
-	{
-		Hp = hp;
-		maxHp = this->maxHp;
-	}
+	void Heal(int healamount);
+	void Ammo(int Ammoamount);
 
 };
 

@@ -4,6 +4,9 @@
 #include "ZombieMgr.h"
 #include "Zombie.h"
 
+float Bullet::speed = 100;
+int Bullet::damage = 10;
+
 Bullet::Bullet(const std::string& name)
 	: GameObject(name)
 {
@@ -42,11 +45,13 @@ void Bullet::SetOrigin(Origins preset)
 	}
 }
 
+
 void Bullet::Init()
 {
-	sortingLayer = SortingLayers::Foreground; // ¼ÖÆÃ ·¹ÀÌ¾î ¼³Á¤
+	sortingLayer = SortingLayers::Foreground; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¾ï¿½ ï¿½ï¿½ï¿½ï¿½
 	sortingOrder = 1;
 }
+
 
 void Bullet::Release()
 {
@@ -54,7 +59,7 @@ void Bullet::Release()
 
 void Bullet::Reset()
 {
-	body.setTexture(TEXTURE_MGR.Get(texId), true); // ÅØ½ºÃ³ Àç¼³Á¤
+	body.setTexture(TEXTURE_MGR.Get(texId), true); // ï¿½Ø½ï¿½Ã³ ï¿½ç¼³ï¿½ï¿½
 	SetOrigin(Origins::ML);
 	SetPosition(sf::Vector2f( 0.f, 0.f ));
 	SetRotation(0.f);
@@ -62,13 +67,13 @@ void Bullet::Reset()
 
 	direction = { 0.f,0.f };
 	speed = 0.f;
-	damage = 30;
+	damage = 100;
 }
 
 void Bullet::Update(float dt)
 {
-	SetPosition(position + direction * speed * dt); // À§Ä¡ ¾÷µ¥ÀÌÆ®
-	hitBox.UpdateTransform(body, GetGlobalBounds()); // È÷Æ®¹Ú½º ¾÷µ¥ÀÌÆ®
+	SetPosition(position + direction * speed * dt); // ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
+	hitBox.UpdateTransform(body, GetGlobalBounds()); // ï¿½ï¿½Æ®ï¿½Ú½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
 
 	const auto& list = ZOMBIE_MGR.GetZombieList();
 	for(Zombie* zombie : list )
@@ -76,10 +81,10 @@ void Bullet::Update(float dt)
 		if (!zombie->GetActive())
 			continue;
 
-		if (hitBox.rect.getGlobalBounds().intersects(zombie->GetHitBox().rect.getGlobalBounds())) // È÷Æ®¹Ú½º Ãæµ¹ Ã¼Å© 
+		if (hitBox.rect.getGlobalBounds().intersects(zombie->GetHitBox().rect.getGlobalBounds())) // ï¿½ï¿½Æ®ï¿½Ú½ï¿½ ï¿½æµ¹ Ã¼Å© 
 		{
-			SetActive(false); // ÃÑ¾Ë ºñÈ°¼ºÈ­
-			zombie->OnDamage(damage); // Á»ºñ¿¡°Ô µ¥¹ÌÁö Àû¿ë
+			SetActive(false); // ï¿½Ñ¾ï¿½ ï¿½ï¿½È°ï¿½ï¿½È­
+			zombie->OnDamage(damage); // ï¿½ï¿½ï¿½ñ¿¡°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 			break; 
 		}
 	}
@@ -94,11 +99,12 @@ void Bullet::Draw(sf::RenderWindow& window)
 
 void Bullet::Fire(const sf::Vector2f& pos, const sf::Vector2f& dir, float spd, int dmg)
 {
-	SetPosition(pos); // ¹ß»ç À§Ä¡ ¼³Á¤
-	direction = dir; // ¹ß»ç ¹æÇâ ¼³Á¤
+	SetPosition(pos); // ï¿½ß»ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½
+	direction = dir; // ï¿½ß»ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	speed = spd;
 	damage = dmg;
 
-	SetRotation(Utils::Angle(direction)); // ¹æÇâ¿¡ µû¶ó È¸Àü ¼³Á¤ 
+	SOUND_MGR.Play(Audio::SHOOT);
+	SetRotation(Utils::Angle(direction)); // ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
 }
 

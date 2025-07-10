@@ -1,6 +1,9 @@
 #pragma once
 #include "TextGo.h"
 #include "HitBox.h"
+
+class SceneGame;
+
 class Button : public TextGo
 {
 protected:
@@ -10,14 +13,12 @@ protected:
 	sf::Color color;
 	HitBox shapeHitBox;
 	HitBox textHitBox;
-
 	HitBox mouseHitBox;
-
-	void(*buttonPtr)() = nullptr;
-
+	std::function<void()> func = nullptr;
 	bool isPressed = false;
-
 public:
+	SceneGame* scene;
+
 	Button(const std::string& fontId = "", const std::string& name = "");
 	~Button() override = default;
 
@@ -28,7 +29,7 @@ public:
 	void setTextPosition(sf::RectangleShape rect);
 	void setTextOrigin(Origins origin);
 	
-	void setButtonPtr(void(*vv)()) { buttonPtr = vv; }
+	void setButtonPtr(std::function<void()> func) { this->func = func; }
 
 	// shape 설정 함수
 	void setShapeSize(sf::Vector2f size);

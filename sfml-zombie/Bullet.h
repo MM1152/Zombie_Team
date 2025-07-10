@@ -2,9 +2,6 @@
 #include "GameObject.h"
 #include "HitBox.h"
 
-
-
-
 class Zombie; 
 class SceneGame;
 class Bullet : public GameObject
@@ -13,8 +10,7 @@ protected:
 	sf::Sprite body; 
 	std::string texId = "graphics/bullet.png"; //텍스처 아이디
 	sf::Vector2f direction; //총알의 방향
-	float speed = 0.f;
-	int damage = 0;
+
 
 
 	Zombie* zombie; //총알이 충돌한 좀비 객체
@@ -22,6 +18,8 @@ protected:
 	SceneGame* sceneGame = nullptr;
 	HitBox hitBox; //충돌 박스
 public:
+	static float speed ;
+	static int damage ;
 	Bullet(const std::string& name = "");
 	virtual ~Bullet() = default;
 

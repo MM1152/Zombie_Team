@@ -12,6 +12,8 @@
 #include "Item.h"
 #include "HealItem.h"
 #include "SpriteGo.h"
+#include "AmmoItem.h"
+
 SceneGame::SceneGame(): Scene(SceneIds::Game)
 {
 }
@@ -41,6 +43,7 @@ void SceneGame::Init()
 	texIds.push_back("graphics/bullet.png");
 	texIds.push_back("graphics/background_sheet.png");
 	texIds.push_back("graphics/health_pickup.png");
+	texIds.push_back("graphics/ammo_pickup.png");
 
 	
 	cursor = new SpriteGo("graphics/crosshair.png");
@@ -60,15 +63,12 @@ void SceneGame::Init()
 	AddGameObject(tileMap);
 	AddGameObject(player);
 	AddGameObject(wave);
-	AddGameObject(cursor);
 
-	healItem = new HealItem("HealItem");
-	AddGameObject(healItem);
+	AddGameObject(cursor);
 
 	ZOMBIE_MGR.SettingScene(this);
 	ZOMBIE_MGR.SettingPlayer(player);
 	player->SettingHpBar(hpbar);
-
 	player->SetTextBullet(textBullet); // 플레이어에 연결해야 SetBulletCount(int curCount, int maxCount) 가 업데이트됨
 
 	Scene::Init();
@@ -80,6 +80,8 @@ void SceneGame::Enter()
 	ZOMBIE_MGR.Enter();
 	FRAMEWORK.GetWindow().setMouseCursorVisible(false);
 	back = (SpriteGo*)AddGameObject(new SpriteGo("graphics/background.png"));
+
+	wave->SetPosition({FRAMEWORK.GetWindowSizeF().x / 2 , FRAMEWORK.GetWindowSizeF().y / 2});
 
 	waveValue = 1;
 	cellCount = { 10 , 10 };
@@ -101,7 +103,7 @@ void SceneGame::Enter()
 	// Up1
 	upGrade1->setShapeSize({ 200.f,200.f });
 	upGrade1->setShapeFillColor(sf::Color::Blue);
-	upGrade1->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.1f });
+	upGrade1->setShapePosition({ bounds.width * 0.5f, 100.f });
 	upGrade1->setShapeOrigin();
 	
 	upGrade1->setCharacterSize(upGrade1->GetShape());
@@ -110,14 +112,16 @@ void SceneGame::Enter()
 	upGrade1->setTextPosition(upGrade1->GetShape());
 	upGrade1->setTextOrigin(Origins::MC);
 	upGrade1->SetActive(false);
-	upGrade1->setButtonPtr([] {
-			
-		});
+	upGrade1->setButtonPtr([this](){
+		Bullet::speed += 10;
+		Bullet::damage += 10;
+		isPressed = true;
+	});
 	
 	// Up2
 	upGrade2->setShapeSize({ 200.f,200.f });
 	upGrade2->setShapeFillColor(sf::Color::Blue);
-	upGrade2->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.3f });
+	upGrade2->setShapePosition({ bounds.width * 0.5f, 250.f });
 	upGrade2->setShapeOrigin();
 		   
 	upGrade2->setCharacterSize(upGrade2->GetShape());
@@ -126,11 +130,15 @@ void SceneGame::Enter()
 	upGrade2->setTextPosition(upGrade2->GetShape());
 	upGrade2->setTextOrigin(Origins::MC);
 	upGrade2->SetActive(false);
+	upGrade2->setButtonPtr([this]() {
+		player->UpGradeBullet(10);
+		isPressed = true;
+		});
 
 	// Up3
 	upGrade3->setShapeSize({ 200.f,200.f });
 	upGrade3->setShapeFillColor(sf::Color::Blue);
-	upGrade3->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.5f });
+	upGrade3->setShapePosition({ bounds.width * 0.5f, 400.f });
 	upGrade3->setShapeOrigin();
 		   
 	upGrade3->setCharacterSize(upGrade3->GetShape());
@@ -139,11 +147,15 @@ void SceneGame::Enter()
 	upGrade3->setTextPosition(upGrade3->GetShape());
 	upGrade3->setTextOrigin(Origins::MC);
 	upGrade3->SetActive(false);
+	upGrade3->setButtonPtr([this]() {
+		player->UpGradeMaxHp(100);
+		isPressed = true;
+		});
 
 	// Up4
 	upGrade4->setShapeSize({ 200.f,200.f });
 	upGrade4->setShapeFillColor(sf::Color::Blue);
-	upGrade4->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.7f });
+	upGrade4->setShapePosition({ bounds.width * 0.5f, 550.f });
 	upGrade4->setShapeOrigin();
 		   
 	upGrade4->setCharacterSize(upGrade4->GetShape());
@@ -152,11 +164,15 @@ void SceneGame::Enter()
 	upGrade4->setTextPosition(upGrade4->GetShape());
 	upGrade4->setTextOrigin(Origins::MC);
 	upGrade4->SetActive(false);
+	upGrade4->setButtonPtr([this]() {
+		player->UpGradeSpeed(1000.f);
+		isPressed = true;
+		});
 
 	// Up5
 	upGrade5->setShapeSize({ 200.f,200.f });
-	upGrade5->setShapeFillColor(sf::Color::Blue);
-	upGrade5->setShapePosition({ bounds.width * 0.5f, bounds.height * 0.9f });
+	upGrade5->setShapeFillColor(sf::Color::Transparent);
+	upGrade5->setShapePosition({ bounds.width * 0.5f, 700.f });
 	upGrade5->setShapeOrigin();
 		   
 	upGrade5->setCharacterSize(upGrade5->GetShape());
@@ -165,11 +181,16 @@ void SceneGame::Enter()
 	upGrade5->setTextPosition(upGrade5->GetShape());
 	upGrade5->setTextOrigin(Origins::MC);
 	upGrade5->SetActive(false);
+	upGrade5->setButtonPtr([this]() {
+		HealItem::healamount += 100;
+		std::cout << HealItem::healamount << std::endl;
+		isPressed = true;
+		});
 
 	// Up6
 	upGrade6->setShapeSize({ 200.f,200.f });
 	upGrade6->setShapeFillColor(sf::Color::Blue);
-	upGrade6->setShapePosition({ bounds.width * 0.5f, bounds.height * 1.0f });
+	upGrade6->setShapePosition({ bounds.width * 0.5f, 850.f });
 	upGrade6->setShapeOrigin();
 		   
 	upGrade6->setCharacterSize(upGrade6->GetShape());
@@ -178,6 +199,11 @@ void SceneGame::Enter()
 	upGrade6->setTextPosition(upGrade6->GetShape());
 	upGrade6->setTextOrigin(Origins::MC);
 	upGrade6->SetActive(false);
+	upGrade6->setButtonPtr([this]() {
+		AmmoItem::Ammoamount += 6;
+		std::cout << AmmoItem::Ammoamount << std::endl;
+		isPressed = true;
+		});
 #pragma endregion
 
 	Scene::Enter(); // �׻� �θ��� Ŭ���� enter�� ȣ���ؾ� �մϴ�.
@@ -204,6 +230,7 @@ void SceneGame::Update(float dt)
 {
 	ZOMBIE_MGR.Update(dt);
 	
+	
 	int count = ZOMBIE_MGR.GetDieZombieCount();
 	zombieCount -= count;
 	textScore->SetScore(count * 10.f);
@@ -219,9 +246,10 @@ void SceneGame::Update(float dt)
 		upGrade5->SetActive(true);
 		upGrade6->SetActive(true);
 		back->SetActive(true);
+		FRAMEWORK.SetTimeScale(0.f);
 	}
 
-	if (gameStop && InputMgr::GetKeyDown(sf::Keyboard::Enter)) 
+	if (gameStop && isPressed/*InputMgr::GetKeyDown(sf::Keyboard::Enter)*/)
 	{
 		// 업그레이드 화면
 		WaveUpgrade();
@@ -233,12 +261,29 @@ void SceneGame::Update(float dt)
 		upGrade5->SetActive(false);
 		upGrade6->SetActive(false);
 		back->SetActive(false);
+		isPressed = false;
 	}
 	
 	worldView.setCenter(player->GetPosition());
 	
 	cursor->SetPosition((sf::Vector2f)ScreenToWorld(InputMgr::GetMousePosition()));
+	
 	Scene::Update(dt);
+
+	timer += dt;
+
+	if (timer >= 2.f)
+	{
+		Item* item = Item::SpawnItem();
+		if (item != nullptr) {
+			item->Init();
+			item->Reset();
+			item->SetPosition(Utils::RandomInUnitCircle() * cellCount.x * 20.f);
+			AddGameObject(item);
+			timer = 0;
+			player->SetItem(item);
+		}
+	}
 }
 
 void SceneGame::Draw(sf::RenderWindow& window)
@@ -260,6 +305,7 @@ void SceneGame::WaveUpgrade()
 	wave->SetZombieCount(zombieCount);
 
 	gameStop = false;
+	FRAMEWORK.SetTimeScale(1.f);
 }
 
 void SceneGame::Upgrade()
@@ -268,9 +314,3 @@ void SceneGame::Upgrade()
 }
 
 
-//void SceneGame::Draw(sf::RenderWindow& window)
-//{
-//	Scene::Draw(window);
-//}
-					 
-				

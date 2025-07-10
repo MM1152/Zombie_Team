@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "Button.h"
 #include "HitBox.h"
-
+#include "SceneGame.h"
 
 Button::Button(const std::string& fontId, const std::string& name) : TextGo("fonts/zombiecontrol.ttf" ,name)
 {
@@ -88,21 +88,25 @@ void Button::Update(float dt)
 
 	if (Utils::CheckCollision(mouseHitBox.rect, textHitBox.rect))
 	{
-		
+		text.setFillColor(sf::Color::Red);
 		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 		{
-			if(buttonPtr != nullptr)
-				buttonPtr();
+			if (func != nullptr)
+				func();
 		}
 	}
 	else
 	{
+		text.setFillColor(sf::Color::White);
 		isPressed = false;
 	}
 
 	if (Utils::CheckCollision(mouseHitBox.rect, shapeHitBox.rect))
 	{
-		shape.setFillColor(sf::Color::Red);
+		text.setFillColor(sf::Color::Red);
+		shape.setFillColor(sf::Color::Transparent);
+		shape.setOutlineColor(sf::Color::Red);
+		shape.setOutlineThickness(1.f);
 		if (InputMgr::GetMouseButtonDown(sf::Mouse::Left))
 		{
 			isPressed = true;
@@ -110,7 +114,9 @@ void Button::Update(float dt)
 	}
 	else
 	{
-		shape.setFillColor(color);
+		text.setFillColor(sf::Color::White);
+		shape.setFillColor(sf::Color::Transparent);
+		shape.setOutlineColor(sf::Color::Transparent);
 		isPressed = false;
 	}
 	
